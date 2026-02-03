@@ -42,11 +42,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem("fitUser", JSON.stringify(user));
 
                 // Aguarda 1.5s para o usuário ver a mensagem e redireciona
+                // Dentro do if (user) { ... }
+                
                 setTimeout(() => {
-                    // Aqui você mudaria para a página de treinos. 
-                    // Exemplo: window.location.href = "dashboard.html";
-                    alert("Login realizado! O sistema agora carregaria o treino: " + user.workoutType);
-                    // window.location.href = "treinos.html"; // Descomente quando criar a pag
+                    // VERIFICA SE É ADMIN
+                    if (user.workoutType === "admin_dashboard") {
+                        window.location.href = "dashboard.html";
+                    } else {
+                        // Se for aluno comum (criaremos user-dashboard.html depois)
+                        alert("Login de Aluno! (Página em construção, indo para admin por enquanto para teste)");
+                        // Por enquanto, mande para dashboard também para você ver funcionando, 
+                        // ou deixe um alert.
+                        window.location.href = "dashboard.html"; 
+                    }
                 }, 1500);
 
             } else {
