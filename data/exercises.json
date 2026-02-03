@@ -1,0 +1,322 @@
+[
+  {
+    "id": "chest_01",
+    "name": "Supino Reto com Barra",
+    "muscleGroup": "Peitoral",
+    "equipment": "Barra",
+    "difficulty": "Intermediário",
+    "variation": "Composto"
+  },
+  {
+    "id": "chest_02",
+    "name": "Supino Reto com Halteres",
+    "muscleGroup": "Peitoral",
+    "equipment": "Halteres",
+    "difficulty": "Intermediário",
+    "variation": "Unilateral"
+  },
+  {
+    "id": "chest_03",
+    "name": "Supino Inclinado com Barra",
+    "muscleGroup": "Peitoral",
+    "equipment": "Barra",
+    "difficulty": "Intermediário",
+    "variation": "Foco Superior"
+  },
+  {
+    "id": "chest_04",
+    "name": "Supino Inclinado com Halteres",
+    "muscleGroup": "Peitoral",
+    "equipment": "Halteres",
+    "difficulty": "Intermediário",
+    "variation": "Foco Superior"
+  },
+  {
+    "id": "chest_05",
+    "name": "Supino Declinado (Canadense)",
+    "muscleGroup": "Peitoral",
+    "equipment": "Barra",
+    "difficulty": "Avançado",
+    "variation": "Foco Inferior"
+  },
+  {
+    "id": "chest_06",
+    "name": "Crucifixo Reto (Fly)",
+    "muscleGroup": "Peitoral",
+    "equipment": "Halteres",
+    "difficulty": "Iniciante",
+    "variation": "Isolado"
+  },
+  {
+    "id": "chest_07",
+    "name": "Crossover na Polia Alta",
+    "muscleGroup": "Peitoral",
+    "equipment": "Polia",
+    "difficulty": "Intermediário",
+    "variation": "Foco Inferior/Miolo"
+  },
+  {
+    "id": "chest_08",
+    "name": "Peck Deck (Voador)",
+    "muscleGroup": "Peitoral",
+    "equipment": "Máquina",
+    "difficulty": "Iniciante",
+    "variation": "Isolado"
+  },
+  {
+    "id": "chest_09",
+    "name": "Flexão de Braços (Push-up)",
+    "muscleGroup": "Peitoral",
+    "equipment": "Peso do Corpo",
+    "difficulty": "Iniciante",
+    "variation": "Calistenia"
+  },
+  {
+    "id": "back_01",
+    "name": "Puxada Frontal Aberta",
+    "muscleGroup": "Costas",
+    "equipment": "Polia",
+    "difficulty": "Iniciante",
+    "variation": "Vertical"
+  },
+  {
+    "id": "back_02",
+    "name": "Puxada Triângulo (Fechada)",
+    "muscleGroup": "Costas",
+    "equipment": "Polia",
+    "difficulty": "Iniciante",
+    "variation": "Vertical"
+  },
+  {
+    "id": "back_03",
+    "name": "Remada Curvada com Barra",
+    "muscleGroup": "Costas",
+    "equipment": "Barra",
+    "difficulty": "Avançado",
+    "variation": "Horizontal"
+  },
+  {
+    "id": "back_04",
+    "name": "Remada Serrote (Unilateral)",
+    "muscleGroup": "Costas",
+    "equipment": "Halteres",
+    "difficulty": "Intermediário",
+    "variation": "Unilateral"
+  },
+  {
+    "id": "back_05",
+    "name": "Remada Baixa (Sentado)",
+    "muscleGroup": "Costas",
+    "equipment": "Polia",
+    "difficulty": "Iniciante",
+    "variation": "Horizontal"
+  },
+  {
+    "id": "back_06",
+    "name": "Barra Fixa (Pull-up)",
+    "muscleGroup": "Costas",
+    "equipment": "Peso do Corpo",
+    "difficulty": "Avançado",
+    "variation": "Calistenia"
+  },
+  {
+    "id": "back_07",
+    "name": "Levantamento Terra",
+    "muscleGroup": "Costas",
+    "equipment": "Barra",
+    "difficulty": "Avançado",
+    "variation": "Composto Total"
+  },
+  {
+    "id": "back_08",
+    "name": "Pulldown com Corda",
+    "muscleGroup": "Costas",
+    "equipment": "Polia",
+    "difficulty": "Intermediário",
+    "variation": "Isolado"
+  },
+  {
+    "id": "legs_01",
+    "name": "Agachamento Livre",
+    "muscleGroup": "Pernas",
+    "equipment": "Barra",
+    "difficulty": "Avançado",
+    "variation": "Quadríceps/Glúteo"
+  },
+  {
+    "id": "legs_02",
+    "name": "Leg Press 45º",
+    "muscleGroup": "Pernas",
+    "equipment": "Máquina",
+    "difficulty": "Iniciante",
+    "variation": "Quadríceps"
+  },
+  {
+    "id": "legs_03",
+    "name": "Cadeira Extensora",
+    "muscleGroup": "Pernas",
+    "equipment": "Máquina",
+    "difficulty": "Iniciante",
+    "variation": "Isolado Quadríceps"
+  },
+  {
+    "id": "legs_04",
+    "name": "Mesa Flexora",
+    "muscleGroup": "Pernas",
+    "equipment": "Máquina",
+    "difficulty": "Iniciante",
+    "variation": "Posterior"
+  },
+  {
+    "id": "legs_05",
+    "name": "Stiff com Barra",
+    "muscleGroup": "Pernas",
+    "equipment": "Barra",
+    "difficulty": "Intermediário",
+    "variation": "Posterior/Glúteo"
+  },
+  {
+    "id": "legs_06",
+    "name": "Afundo (Lunge)",
+    "muscleGroup": "Pernas",
+    "equipment": "Halteres",
+    "difficulty": "Intermediário",
+    "variation": "Unilateral"
+  },
+  {
+    "id": "legs_07",
+    "name": "Elevação Pélvica",
+    "muscleGroup": "Pernas",
+    "equipment": "Barra",
+    "difficulty": "Intermediário",
+    "variation": "Foco Glúteo"
+  },
+  {
+    "id": "legs_08",
+    "name": "Gêmeos Sentado (Panturrilha)",
+    "muscleGroup": "Pernas",
+    "equipment": "Máquina",
+    "difficulty": "Iniciante",
+    "variation": "Panturrilha"
+  },
+  {
+    "id": "legs_09",
+    "name": "Agachamento Búlgaro",
+    "muscleGroup": "Pernas",
+    "equipment": "Halteres",
+    "difficulty": "Avançado",
+    "variation": "Unilateral"
+  },
+  {
+    "id": "shoulders_01",
+    "name": "Desenvolvimento com Halteres",
+    "muscleGroup": "Ombros",
+    "equipment": "Halteres",
+    "difficulty": "Intermediário",
+    "variation": "Anterior/Médio"
+  },
+  {
+    "id": "shoulders_02",
+    "name": "Elevação Lateral",
+    "muscleGroup": "Ombros",
+    "equipment": "Halteres",
+    "difficulty": "Iniciante",
+    "variation": "Médio"
+  },
+  {
+    "id": "shoulders_03",
+    "name": "Elevação Frontal",
+    "muscleGroup": "Ombros",
+    "equipment": "Halteres",
+    "difficulty": "Iniciante",
+    "variation": "Anterior"
+  },
+  {
+    "id": "shoulders_04",
+    "name": "Crucifixo Inverso",
+    "muscleGroup": "Ombros",
+    "equipment": "Halteres",
+    "difficulty": "Intermediário",
+    "variation": "Posterior"
+  },
+  {
+    "id": "shoulders_05",
+    "name": "Remada Alta na Polia",
+    "muscleGroup": "Ombros",
+    "equipment": "Polia",
+    "difficulty": "Intermediário",
+    "variation": "Trapézio/Ombro"
+  },
+  {
+    "id": "arms_01",
+    "name": "Rosca Direta",
+    "muscleGroup": "Bíceps",
+    "equipment": "Barra",
+    "difficulty": "Iniciante",
+    "variation": "Básico"
+  },
+  {
+    "id": "arms_02",
+    "name": "Rosca Martelo",
+    "muscleGroup": "Bíceps",
+    "equipment": "Halteres",
+    "difficulty": "Iniciante",
+    "variation": "Braquial"
+  },
+  {
+    "id": "arms_03",
+    "name": "Rosca Scott",
+    "muscleGroup": "Bíceps",
+    "equipment": "Máquina",
+    "difficulty": "Iniciante",
+    "variation": "Isolado"
+  },
+  {
+    "id": "arms_04",
+    "name": "Tríceps Pulley (Corda)",
+    "muscleGroup": "Tríceps",
+    "equipment": "Polia",
+    "difficulty": "Iniciante",
+    "variation": "Isolado"
+  },
+  {
+    "id": "arms_05",
+    "name": "Tríceps Testa",
+    "muscleGroup": "Tríceps",
+    "equipment": "Barra W",
+    "difficulty": "Intermediário",
+    "variation": "Básico"
+  },
+  {
+    "id": "arms_06",
+    "name": "Mergulho no Banco",
+    "muscleGroup": "Tríceps",
+    "equipment": "Peso do Corpo",
+    "difficulty": "Iniciante",
+    "variation": "Calistenia"
+  },
+  {
+    "id": "abs_01",
+    "name": "Abdominal Supra (Chão)",
+    "muscleGroup": "Abdômen",
+    "equipment": "Peso do Corpo",
+    "difficulty": "Iniciante",
+    "variation": "Superior"
+  },
+  {
+    "id": "abs_02",
+    "name": "Prancha Isométrica",
+    "muscleGroup": "Abdômen",
+    "equipment": "Peso do Corpo",
+    "difficulty": "Intermediário",
+    "variation": "Core"
+  },
+  {
+    "id": "abs_03",
+    "name": "Elevação de Pernas (Infra)",
+    "muscleGroup": "Abdômen",
+    "equipment": "Peso do Corpo",
+    "difficulty": "Intermediário",
+    "variation": "Inferior"
+  }
+]
