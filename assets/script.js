@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             // 1. Busca a lista de usuários
-            const response = await fetch('/users.json');
+            const response = await fetch('https://psibrunosg.github.io/fisicalplanner/user/users.json');
             const users = await response.json();
 
             // 2. Verifica se existe alguém com esse email e senha
