@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "name": "Bruno de Souza",
+    "email": "brunosg2711@gmail.com",
+    "password": "123@123",
+    "workoutType": "hipertrofia_avancado",
+    "lastLogin": "2023-10-27"
+  },
+  {
+    "id": 2,
+    "name": "William Corrales",
+    "email": "maria@email.com",
+    "password": "123@123",
+    "workoutType": "emagrecimento_iniciante",
+    "lastLogin": "2023-10-26"
+  },
+  {
+    "id": 3,
+    "name": "Admin Fit",
+    "email": "admin@fit.com",
+    "password": "admin",
+    "workoutType": "admin_dashboard",
+    "lastLogin": "2023-10-28"
+  }
+]
