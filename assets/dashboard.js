@@ -1,3 +1,6 @@
+// IMPORTANTE: Importando a conexão com o banco de dados
+import { db, ref, update } from "./firebase.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
     // === 1. VERIFICAÇÃO DE SEGURANÇA ===
     const adminUser = JSON.parse(localStorage.getItem("fitUser"));
@@ -16,35 +19,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
 
-    // === 2. GERENCIAMENTO DE DADOS (DATABASE SIMULADO) ===
+    // === 2. GERENCIAMENTO DE DADOS ===
     let dbUsers = [];
     let dbExercises = [];
-    let currentWorkoutBuild = []; // Lista temporária do treino que estamos criando
+    let currentWorkoutBuild = []; // Lista temporária do treino
 
     async function initData() {
-        // Tenta pegar do LocalStorage (Edições salvas)
-        const localUsers = localStorage.getItem("db_users");
-        const localExercises = localStorage.getItem("db_exercises");
-
-        if (localUsers) {
-            dbUsers = JSON.parse(localUsers);
-        } else {
-            // Se não tem, baixa do JSON original e salva no Local
-            try {
-                const res = await fetch('https://psibrunosg.github.io/fisicalplanner/user/users.json');
-                dbUsers = await res.json();
-                localStorage.setItem("db_users", JSON.stringify(dbUsers)); // Salva inicial
-            } catch (e) { console.error("Erro users:", e); }
+        // Carrega USUÁRIOS do seu JSON no GitHub (Para preencher a lista de opções)
+        try {
+            const res = await fetch('https://psibrunosg.github.io/fisicalplanner/user/users.json');
+            dbUsers = await res.json();
+        } catch (e) { 
+            console.error("Erro ao carregar users.json:", e); 
+            alert("Erro ao carregar lista de alunos. Verifique o console.");
         }
 
-        if (localExercises) {
-            dbExercises = JSON.parse(localExercises);
-        } else {
-            try {
-                const res = await fetch('https://psibrunosg.github.io/fisicalplanner/data/exercises.json');
-                dbExercises = await res.json();
-                localStorage.setItem("db_exercises", JSON.stringify(dbExercises));
-            } catch (e) { console.error("Erro exercises:", e); }
+        // Carrega EXERCÍCIOS do seu JSON no GitHub
+        try {
+            const res = await fetch('https://psibrunosg.github.io/fisicalplanner/data/exercises.json');
+            dbExercises = await res.json();
+        } catch (e) { 
+            console.error("Erro ao carregar exercises.json:", e); 
         }
 
         renderDashboard();
@@ -53,48 +48,52 @@ document.addEventListener("DOMContentLoaded", async () => {
     // === 3. RENDERIZAÇÃO DA TELA ===
     function renderDashboard() {
         // Atualiza Cards
-        document.getElementById("totalUsers").innerText = dbUsers.length;
+        const totalEl = document.getElementById("totalUsers");
+        if(totalEl) totalEl.innerText = dbUsers.length;
 
         // Preenche Tabela de Usuários
         const tableBody = document.getElementById("userTableBody");
-        tableBody.innerHTML = "";
-        
-        // Preenche Select de Alunos (No criador de treinos)
-        const studentSelect = document.getElementById("studentSelect");
-        studentSelect.innerHTML = '<option value="">Selecione um aluno...</option>';
+        if(tableBody) {
+            tableBody.innerHTML = "";
+            
+            // Preenche Select de Alunos (No criador de treinos)
+            const studentSelect = document.getElementById("studentSelect");
+            studentSelect.innerHTML = '<option value="">Selecione um aluno...</option>';
 
-        dbUsers.forEach(user => {
-            // Tabela
-            const isAdm = user.workoutType === 'admin_dashboard';
-            if(isAdm) return; // Não mostra admin na lista de alunos pra editar
+            dbUsers.forEach(user => {
+                // Tabela (Ignora admin)
+                const isAdm = user.workoutType === 'admin_dashboard';
+                if(isAdm) return; 
 
-            const row = `
-                <tr>
-                    <td style="display: flex; align-items: center; gap: 10px;">
-                        <img src="${user.avatar || 'https://ui-avatars.com/api/?name=User'}" style="width: 30px; border-radius: 50%;">
-                        ${user.name}
-                    </td>
-                    <td>${user.email}</td>
-                    <td>${user.workoutType || 'Sem treino'}</td>
-                    <td><span class="status-badge status-active">ATIVO</span></td>
-                </tr>
-            `;
-            tableBody.innerHTML += row;
+                const row = `
+                    <tr>
+                        <td style="display: flex; align-items: center; gap: 10px;">
+                            <img src="${user.avatar || 'https://ui-avatars.com/api/?name=User'}" style="width: 30px; border-radius: 50%;">
+                            ${user.name}
+                        </td>
+                        <td>${user.email}</td>
+                        <td>${user.workoutType || 'Padrão'}</td>
+                        <td><span class="status-badge status-active">ATIVO</span></td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
 
-            // Select Dropdown
-            const option = document.createElement("option");
-            option.value = user.email; // Usamos email como ID único
-            option.innerText = user.name;
-            studentSelect.appendChild(option);
-        });
+                // Select Dropdown
+                const option = document.createElement("option");
+                option.value = user.email; // O e-mail será a chave
+                option.innerText = user.name;
+                studentSelect.appendChild(option);
+            });
+        }
 
-        updateExerciseSelect(); // Carrega lista de exercícios
+        updateExerciseSelect(); // Carrega lista de exercícios no dropdown
     }
 
     // === 4. LÓGICA DO CRIADOR DE TREINOS ===
     
     // Filtro de Grupo Muscular
-    document.getElementById("muscleFilter").addEventListener("change", updateExerciseSelect);
+    const muscleFilter = document.getElementById("muscleFilter");
+    if(muscleFilter) muscleFilter.addEventListener("change", updateExerciseSelect);
 
     function updateExerciseSelect() {
         const filter = document.getElementById("muscleFilter").value;
@@ -107,7 +106,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         filtered.forEach(ex => {
             const opt = document.createElement("option");
-            opt.value = ex.name; // Salvamos o nome do exercício
+            opt.value = ex.name;
             opt.innerText = ex.name;
             select.appendChild(opt);
         });
@@ -149,7 +148,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             
             li.innerHTML = `
                 <span><strong>${item.exercise}</strong> - ${item.sets}x ${item.reps}</span>
-                <button onclick="removeExercise(${index})" style="color:#ff4d4d; background:none; border:none; cursor:pointer;">
+                <button onclick="window.removeExercise(${index})" style="color:#ff4d4d; background:none; border:none; cursor:pointer;">
                     <i class="ph ph-trash"></i>
                 </button>
             `;
@@ -157,40 +156,46 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Função global para remover itens da lista (precisa estar no window)
+    // Função global para remover itens da lista
     window.removeExercise = (index) => {
         currentWorkoutBuild.splice(index, 1);
         renderWorkoutPreview();
     };
 
-    // === 5. SALVAR TUDO (A MÁGICA) ===
+    // === 5. SALVAR NO FIREBASE (AQUI ESTÁ A MUDANÇA) ===
     document.getElementById("saveWorkoutBtn").addEventListener("click", () => {
         const selectedEmail = document.getElementById("studentSelect").value;
         
         if (!selectedEmail) return alert("Selecione um aluno para salvar o treino!");
         if (currentWorkoutBuild.length === 0) return alert("O treino está vazio!");
 
-        // 1. Acha o usuário no nosso "banco" local
-        const userIndex = dbUsers.findIndex(u => u.email === selectedEmail);
-        
-        if (userIndex > -1) {
-            // 2. Atualiza o usuário com o novo treino
-            // Criamos uma propriedade 'customWorkout' no usuário
-            dbUsers[userIndex].customWorkout = currentWorkoutBuild;
-            dbUsers[userIndex].workoutType = "Personalizado"; // Muda o status na tabela
+        // Feedback visual
+        const btnSave = document.getElementById("saveWorkoutBtn");
+        const originalText = btnSave.innerText;
+        btnSave.innerText = "SALVANDO NA NUVEM...";
+        btnSave.disabled = true;
 
-            // 3. PERSISTÊNCIA: Salva no LocalStorage
-            localStorage.setItem("db_users", JSON.stringify(dbUsers));
+        // Criamos uma ID segura para o Firebase (sem pontos ou @)
+        // Ex: joao@email.com vira joao-at-email-com
+        const userId = selectedEmail.replace(/\./g, '-').replace(/@/g, '-at-');
 
-            alert(`Treino salvo com sucesso para ${dbUsers[userIndex].name}!`);
-            
-            // Limpa o form
+        // Manda pro Firebase
+        update(ref(db, 'users/' + userId), {
+            customWorkout: currentWorkoutBuild,
+            lastUpdate: new Date().toISOString()
+        })
+        .then(() => {
+            alert("Treino salvo na Nuvem com sucesso! O aluno já pode ver no app.");
             currentWorkoutBuild = [];
             renderWorkoutPreview();
-            renderDashboard(); // Atualiza a tabela lá em cima
-        } else {
-            alert("Erro: Usuário não encontrado.");
-        }
+        })
+        .catch((error) => {
+            alert("Erro ao salvar: " + error.message);
+        })
+        .finally(() => {
+            btnSave.innerText = originalText;
+            btnSave.disabled = false;
+        });
     });
 
     // Inicializa tudo
