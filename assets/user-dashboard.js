@@ -117,27 +117,75 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
 
         // Configurar Anamnese
-        if (userData.anamnese) {
-            if(document.getElementById("anamneseGoal")) document.getElementById("anamneseGoal").value = userData.anamnese.goal || "saude";
-            if(document.getElementById("anamneseInjuries")) document.getElementById("anamneseInjuries").value = userData.anamnese.injuries || "";
-            if(document.getElementById("anamneseMeds")) document.getElementById("anamneseMeds").value = userData.anamnese.meds || "";
-        }
+        // === 4. LÓGICA DA ANAMNESE (Atualizada e Completa) ===
+    
+    // CARREGAR DADOS
+    if (userData.anamnese) {
+        const a = userData.anamnese;
+        
+        // Campos de Texto Simples
+        if(document.getElementById("anm_occupation")) document.getElementById("anm_occupation").value = a.occupation || "";
+        if(document.getElementById("anm_work_posture")) document.getElementById("anm_work_posture").value = a.workPosture || "sentado";
+        if(document.getElementById("anm_meds")) document.getElementById("anm_meds").value = a.meds || "";
+        if(document.getElementById("anm_smoker")) document.getElementById("anm_smoker").value = a.smoker || "nao";
+        if(document.getElementById("anm_injuries")) document.getElementById("anm_injuries").value = a.injuries || "";
+        if(document.getElementById("anm_allergies")) document.getElementById("anm_allergies").value = a.allergies || "";
 
-        document.getElementById("saveAnamneseBtn").addEventListener("click", async () => {
-            const btn = document.getElementById("saveAnamneseBtn");
-            btn.innerText = "SALVANDO...";
-            try {
-                await update(ref(db, `users/${userId}/anamnese`), {
-                    goal: document.getElementById("anamneseGoal").value,
-                    injuries: document.getElementById("anamneseInjuries").value,
-                    meds: document.getElementById("anamneseMeds").value,
-                    updatedAt: new Date().toISOString()
+        // Checkboxes (Arrays)
+        // Função auxiliar para marcar checkboxes salvos
+        const checkBoxes = (className, savedArray) => {
+            if(savedArray) {
+                document.querySelectorAll(`.${className}`).forEach(cb => {
+                    if (savedArray.includes(cb.value)) cb.checked = true;
                 });
-                alert("Salvo!");
-            } catch (e) { alert("Erro: " + e.message); }
-            finally { btn.innerText = "SALVAR DADOS"; }
-        });
+            }
+        };
+
+        checkBoxes('med-check', a.medicalHistory); // Histórico Médico
+        checkBoxes('sym-check', a.symptoms);       // Sintomas
+        checkBoxes('goal-check', a.goals);         // Objetivos
     }
+
+    // SALVAR DADOS
+    document.getElementById("saveAnamneseBtn").addEventListener("click", async () => {
+        const btn = document.getElementById("saveAnamneseBtn");
+        btn.innerText = "SALVANDO...";
+        
+        // Função auxiliar para pegar checkboxes marcados em Array
+        const getChecked = (className) => {
+            return Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value);
+        };
+
+        const anamneseData = {
+            // Seção 1
+            occupation: document.getElementById("anm_occupation").value,
+            workPosture: document.getElementById("anm_work_posture").value,
+            
+            // Seção 2 (Arrays)
+            medicalHistory: getChecked('med-check'),
+            symptoms: getChecked('sym-check'),
+            meds: document.getElementById("anm_meds").value,
+
+            // Seção 3
+            smoker: document.getElementById("anm_smoker").value,
+            injuries: document.getElementById("anm_injuries").value,
+            allergies: document.getElementById("anm_allergies").value,
+
+            // Seção 4 (Array)
+            goals: getChecked('goal-check'),
+            
+            updatedAt: new Date().toISOString()
+        };
+
+        try {
+            await update(ref(db, `users/${userId}/anamnese`), anamneseData);
+            alert("Ficha de saúde atualizada com sucesso! O treinador irá analisar.");
+        } catch (e) {
+            alert("Erro ao salvar: " + e.message);
+        } finally {
+            btn.innerText = "SALVAR FICHA COMPLETA";
+        }
+    });
 
 
     // --- FUNÇÕES DE EXECUÇÃO DE TREINO (MODO FOCO) ---
