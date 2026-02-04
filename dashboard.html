@@ -89,115 +89,10 @@
                     <h2>Criador de Treinos</h2>
                 </div>
 
-                <div class="workout-builder" style="background: var(--surface-color); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                                        
-                    <div class="form-group">
-                        <label style="color: var(--primary-color);">1. Selecione o Aluno</label>
-                        <select id="studentSelect" class="form-input" style="background: #0a0a0a; color: white;">
-                            <option value="">Carregando alunos...</option>
-                        </select>
-                    </div>
-
-                    <div id="activeWorkoutsArea" style="margin-top: 15px; padding: 10px; background: rgba(255, 0, 0, 0.1); border: 1px solid rgba(255, 0, 0, 0.2); border-radius: 8px; display: none;">
-                        <label style="font-size: 0.9rem; color: #ff9999; display: block; margin-bottom: 8px;">
-                            <i class="ph ph-trash"></i> Gerenciar Treinos Existentes:
-                        </label>
-                        <div id="activeWorkoutsList" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                            </div>
-                    </div>
-
-                    <div class="form-group" style="margin-top: 1rem;">
-                        <label style="color: var(--primary-color);">2. Nome do Treino (Divisão)</label>
-                        <input type="text" id="workoutNameInput" class="form-input" placeholder="Ex: Treino A - Peito e Tríceps" style="background: #0a0a0a; color: white;">
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-                        <div class="form-group">
-                            <label>Filtro Muscular</label>
-                            <select id="muscleFilter" class="form-input" style="background: #0a0a0a; color: white;">
-                                <option value="all">Todos</option>
-                                <option value="Peitoral">Peitoral</option>
-                                <option value="Costas">Costas</option>
-                                <option value="Pernas">Pernas</option>
-                                <option value="Ombros">Ombros</option>
-                                <option value="Bíceps">Bíceps</option>
-                                <option value="Tríceps">Tríceps</option>
-                                <option value="Cardio">Cardio</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Exercício</label>
-                            <select id="exerciseSelect" class="form-input" style="background: #0a0a0a; color: white;">
-                                <option value="">Selecione...</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div id="input-container" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin-top: 1rem; margin-bottom: 1rem;">
-                        
-                        <div id="strength-inputs" class="input-group-dynamic">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                                <div class="form-group">
-                                    <label>Séries</label>
-                                    <input type="number" id="sets" class="form-input" placeholder="Ex: 4" value="3">
-                                </div>
-                                <div class="form-group">
-                                    <label>Repetições</label>
-                                    <input type="text" id="reps" class="form-input" placeholder="Ex: 12" value="12">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="cardio-inputs" class="input-group-dynamic" style="display: none;">
-                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                                <div class="form-group">
-                                    <label>Distância (km)</label>
-                                    <input type="number" id="distance" class="form-input" placeholder="Ex: 5">
-                                </div>
-                                <div class="form-group">
-                                    <label>Tempo Alvo (min)</label>
-                                    <input type="text" id="duration" class="form-input" placeholder="Ex: 30:00">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="crossfit-inputs" class="input-group-dynamic" style="display: none;">
-                            <div class="form-group">
-                                <label>Instruções do WOD / Detalhes</label>
-                                <textarea id="wod-details" class="form-input" rows="2" placeholder="Ex: AMRAP 15min..."></textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div style="text-align: right;">
-                        <button id="addExerciseBtn" class="btn-sm" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px;">
-                            <i class="ph ph-plus-circle" style="font-size: 1.2rem;"></i> ADICIONAR AO TREINO
-                        </button>
-                    </div>
-
-                    <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
-                        <h3 style="font-size: 1rem; margin-bottom: 1rem;">Prévia: <span id="previewTitle" style="color:var(--primary-color)">...</span></h3>
-                        
-                        <ul id="workoutPreview" style="list-style: none; margin-bottom: 1.5rem;">
-                            <li style="color: var(--text-muted); font-style: italic;">Nenhum exercício adicionado ainda.</li>
-                        </ul>
-                        
-                        <button id="saveWorkoutBtn" class="btn-login" style="background-color: var(--primary-color); color: black;">
-                            ENVIAR TREINO PARA O ALUNO
-                        </button>
-                    </div>
-
-                </div> 
-            </section>
-            <section id="assessment-section" class="hidden">
-                <div class="section-header">
-                    <h2>Nova Avaliação Física</h2>
-                </div>
-
-                <div class="workout-builder" style="background: var(--surface-color); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+              <div class="workout-builder" style="background: var(--surface-color); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
                     
                     <div class="form-group" style="margin-bottom: 2rem;">
-                        <label style="color: var(--primary-color);">Selecione o Aluno para Avaliar</label>
+                        <label style="color: var(--primary-color); font-size: 1.1rem;">1. Selecione o Aluno</label>
                         <select id="assessmentStudentSelect" class="form-input" style="background: #0a0a0a; color: white;">
                             <option value="">Carregando lista...</option>
                         </select>
@@ -205,48 +100,86 @@
 
                     <div id="assessmentForm" style="display:none;">
                         
-                        <h3 style="font-size: 1rem; color: #aaa; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">1. Antropometria Básica</h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-                            <div class="form-group">
-                                <label>Peso (kg)</label>
-                                <input type="number" id="aval_weight" class="form-input" placeholder="0.0">
-                            </div>
-                            <div class="form-group">
-                                <label>Altura (cm)</label>
-                                <input type="number" id="aval_height" class="form-input" placeholder="0">
-                            </div>
-                            <div class="form-group">
-                                <label>IMC (Auto)</label>
-                                <input type="text" id="aval_bmi" class="form-input" disabled style="background: #222; color: #777;">
+                        <div style="background: rgba(0, 255, 136, 0.05); padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--primary-color);">
+                            <h3 style="color: var(--primary-color); margin-bottom: 15px;"><i class="ph ph-scale"></i> Composição Corporal</h3>
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem;">
+                                <div class="form-group"><label>Peso (kg)</label><input type="number" id="aval_weight" class="form-input"></div>
+                                <div class="form-group"><label>Altura (cm)</label><input type="number" id="aval_height" class="form-input"></div>
+                                <div class="form-group"><label>IMC</label><input type="text" id="aval_bmi" class="form-input" disabled style="background:#222; color:#fff;"></div>
+                                
+                                <div class="form-group"><label>Gordura (%)</label><input type="number" id="aval_fat_perc" class="form-input" placeholder="Auto ou Bio"></div>
+                                <div class="form-group"><label>Massa Muscular (kg)</label><input type="number" id="aval_muscle_kg" class="form-input"></div>
+                                <div class="form-group"><label>Gordura Visceral</label><input type="number" id="aval_visceral" class="form-input"></div>
+                                <div class="form-group"><label>Idade Metabólica</label><input type="number" id="aval_metabolic_age" class="form-input"></div>
                             </div>
                         </div>
 
-                        <h3 style="font-size: 1rem; color: #aaa; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">2. Perímetros (cm)</h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                        <h3 style="font-size: 1rem; color: #fff; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">2. Perímetros (cm)</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
                             <div class="form-group"><label>Ombros</label><input type="number" id="circ_shoulder" class="form-input"></div>
                             <div class="form-group"><label>Tórax</label><input type="number" id="circ_chest" class="form-input"></div>
                             <div class="form-group"><label>Cintura</label><input type="number" id="circ_waist" class="form-input"></div>
                             <div class="form-group"><label>Abdômen</label><input type="number" id="circ_abdomen" class="form-input"></div>
                             <div class="form-group"><label>Quadril</label><input type="number" id="circ_hip" class="form-input"></div>
-                            <div class="form-group"><label>Braço Dir.</label><input type="number" id="circ_arm_r" class="form-input"></div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                            <div class="form-group"><label>Braço Dir. (Rel)</label><input type="number" id="circ_arm_r" class="form-input"></div>
+                            <div class="form-group"><label>Braço Dir. (Cont)</label><input type="number" id="circ_arm_r_cont" class="form-input"></div>
+                            <div class="form-group"><label>Braço Esq. (Rel)</label><input type="number" id="circ_arm_l" class="form-input"></div>
                             <div class="form-group"><label>Coxa Dir.</label><input type="number" id="circ_thigh_r" class="form-input"></div>
                             <div class="form-group"><label>Panturrilha Dir.</label><input type="number" id="circ_calf_r" class="form-input"></div>
                         </div>
 
-                        <h3 style="font-size: 1rem; color: #aaa; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">3. Dobras Cutâneas (mm)</h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
-                            <div class="form-group"><label>Tricipital</label><input type="number" id="fold_triceps" class="form-input"></div>
-                            <div class="form-group"><label>Subescapular</label><input type="number" id="fold_subscapular" class="form-input"></div>
-                            <div class="form-group"><label>Peitoral</label><input type="number" id="fold_chest" class="form-input"></div>
-                            <div class="form-group"><label>Axilar Média</label><input type="number" id="fold_axillary" class="form-input"></div>
-                            <div class="form-group"><label>Supraíliaca</label><input type="number" id="fold_suprailiac" class="form-input"></div>
-                            <div class="form-group"><label>Abdominal</label><input type="number" id="fold_abdominal" class="form-input"></div>
-                            <div class="form-group"><label>Coxa</label><input type="number" id="fold_thigh" class="form-input"></div>
+                        <h3 style="font-size: 1rem; color: #fff; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px;">3. Dobras Cutâneas (mm)</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+                            <div class="form-group"><label>Tricipital</label><input type="number" id="fold_triceps" class="form-input skinfold-input"></div>
+                            <div class="form-group"><label>Subescapular</label><input type="number" id="fold_subscapular" class="form-input skinfold-input"></div>
+                            <div class="form-group"><label>Peitoral</label><input type="number" id="fold_chest" class="form-input skinfold-input"></div>
+                            <div class="form-group"><label>Axilar Média</label><input type="number" id="fold_axillary" class="form-input skinfold-input"></div>
+                            <div class="form-group"><label>Supraíliaca</label><input type="number" id="fold_suprailiac" class="form-input skinfold-input"></div>
+                            <div class="form-group"><label>Abdominal</label><input type="number" id="fold_abdominal" class="form-input skinfold-input"></div>
+                            <div class="form-group"><label>Coxa</label><input type="number" id="fold_thigh" class="form-input skinfold-input"></div>
                         </div>
+                        <p style="font-size: 0.8rem; color: #777; margin-top: -10px; margin-bottom: 20px;">*Preencher as dobras calculará a % de Gordura automaticamente (Pollock 7 Dobras).</p>
+
+                        <details style="margin-bottom: 20px; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                            <summary style="padding: 10px; cursor: pointer; color: #aaa;">4. Análise Postural (Opcional)</summary>
+                            <div style="padding: 15px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                <div class="form-group"><label>Coluna / Costas</label>
+                                    <select id="posture_spine" class="form-input">
+                                        <option value="Normal">Normal</option>
+                                        <option value="Hiperlordose">Hiperlordose</option>
+                                        <option value="Cifose">Cifose</option>
+                                        <option value="Escoliose">Escoliose</option>
+                                    </select>
+                                </div>
+                                <div class="form-group"><label>Ombros</label>
+                                    <select id="posture_shoulders" class="form-input">
+                                        <option value="Alinhados">Alinhados</option>
+                                        <option value="Protusos">Protusos (Para frente)</option>
+                                        <option value="Assimétricos">Assimétricos</option>
+                                    </select>
+                                </div>
+                                <div class="form-group"><label>Joelhos</label>
+                                    <select id="posture_knees" class="form-input">
+                                        <option value="Alinhados">Alinhados</option>
+                                        <option value="Valgo">Valgo (Para dentro)</option>
+                                        <option value="Varo">Varo (Para fora)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group"><label>Pés</label>
+                                    <select id="posture_feet" class="form-input">
+                                        <option value="Normal">Normal</option>
+                                        <option value="Plano">Plano (Chato)</option>
+                                        <option value="Cavo">Cavo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </details>
 
                         <div style="text-align: right;">
-                            <button id="saveAssessmentBtn" class="btn-login" style="background-color: var(--primary-color); color: black;">
-                                SALVAR AVALIAÇÃO
+                            <button id="saveAssessmentBtn" class="btn-login" style="background-color: var(--primary-color); color: black; font-weight: bold; padding: 15px 30px;">
+                                SALVAR AVALIAÇÃO COMPLETA
                             </button>
                         </div>
                     </div>
