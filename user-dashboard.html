@@ -3,136 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitLife | Treino Ativo</title>
+    <title>FitLife | App do Aluno</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
     <style>
-        /* CSS EXTRA PARA O APP DE TREINO */
-        .workout-controls {
+        /* --- ESTILOS ESPECÍFICOS DO APP --- */
+        body { padding-bottom: 80px; } /* Espaço para não cobrir content com timer */
+
+        /* 1. TELA DE CARDS (HOME) */
+        .workout-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1rem;
+            padding: 1.5rem;
+        }
+
+        .workout-card-select {
+            background: linear-gradient(145deg, var(--surface-color), #1a1a1a);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .workout-card-select:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 136, 0.1);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* 2. TELA DE TREINO (ATIVO) */
+        .header-active {
             padding: 1rem 1.5rem;
-            background: var(--surface-color);
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(10px);
             position: sticky;
             top: 0;
-            z-index: 99;
+            z-index: 90;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .workout-select {
-            flex: 1;
-            padding: 10px;
-            background: #000;
-            color: white;
-            border: 1px solid #333;
-            border-radius: 8px;
-        }
-
-        .exercise-card {
-            flex-direction: column; /* Agora é coluna para caber as séries */
-            align-items: flex-start;
-            gap: 10px;
-        }
-
-        .set-row {
-            display: grid;
-            grid-template-columns: 30px 1fr 1fr 40px; /* Série | Kg | Reps | Check */
-            gap: 10px;
-            width: 100%;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-
-        .set-row:last-child { border-bottom: none; }
-
-        .set-input {
-            background: #000;
-            border: 1px solid #333;
-            color: white;
-            padding: 8px;
-            border-radius: 6px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .check-box {
-            width: 30px;
-            height: 30px;
-            border: 2px solid #555;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .check-box.checked {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            color: black;
-        }
-
-        .btn-skip {
-            background: none;
-            border: none;
-            color: #777;
-            font-size: 0.8rem;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-
-        /* TIMER FLUTUANTE */
-        .timer-overlay {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            left: 20px;
-            background: #1a1a1a;
-            border: 1px solid var(--primary-color);
-            padding: 15px;
-            border-radius: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            transform: translateY(150%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
         }
 
-        .timer-overlay.active { transform: translateY(0); }
+        .hidden { display: none !important; }
 
-        .timer-display {
-            font-size: 1.5rem;
+        /* 3. MODAL DE FEEDBACK (ANAMNESE) */
+        .feedback-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .feedback-card {
+            background: var(--surface-color);
+            padding: 2rem;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid var(--primary-color);
+        }
+
+        .rpe-scale {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+            gap: 5px;
+        }
+
+        .rpe-btn {
+            flex: 1;
+            padding: 10px 0;
+            background: #333;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
             font-weight: bold;
-            color: var(--primary-color);
-            font-variant-numeric: tabular-nums;
         }
+
+        .rpe-btn.selected {
+            background: var(--primary-color);
+            color: black;
+            transform: scale(1.1);
+        }
+
+        /* Timer Flutuante */
+        .timer-overlay {
+            position: fixed; bottom: 20px; right: 20px; left: 20px;
+            background: #1a1a1a; border: 1px solid var(--primary-color);
+            padding: 15px; border-radius: 12px;
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            transform: translateY(200%); transition: transform 0.3s ease;
+            z-index: 100;
+        }
+        .timer-overlay.active { transform: translateY(0); }
     </style>
 </head>
 <body>
 
-    <div class="workout-controls">
-        <select id="workoutSelector" class="workout-select">
-            <option value="default">Carregando treinos...</option>
-        </select>
-        <button id="finishWorkoutBtn" class="btn-sm" style="background: #fff; color: #000;">Concluir</button>
+    <div id="view-home">
+        <header style="padding: 2rem 1.5rem 0.5rem 1.5rem;">
+            <h1 style="font-size: 1.5rem;">Olá, <span id="userName" style="color: var(--primary-color);">Atleta</span>!</h1>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Qual é a missão de hoje?</p>
+        </header>
+
+        <div id="workoutCardsContainer" class="workout-grid">
+            <p style="color: #666;">Carregando seus treinos...</p>
+        </div>
+
+        <div style="padding: 1.5rem; text-align: center;">
+            <button id="logoutBtn" style="background: none; border: 1px solid #333; color: #777; padding: 10px 20px; border-radius: 20px;">Sair da conta</button>
+        </div>
     </div>
 
-    <div id="workoutList" class="workout-list" style="padding-top: 1rem;">
+    <div id="view-workout" class="hidden">
+        <div class="header-active">
+            <div>
+                <button id="backBtn" style="background:none; border:none; color:white; font-size:1.2rem; cursor:pointer;">
+                    <i class="ph ph-arrow-left"></i>
+                </button>
+                <span id="activeWorkoutTitle" style="margin-left: 10px; font-weight: bold;">Treino A</span>
+            </div>
+            <button id="finishBtn" class="btn-sm" style="background: var(--primary-color); color: black;">FINALIZAR</button>
         </div>
+
+        <div id="workoutList" style="padding: 1rem 1.5rem;">
+            </div>
+    </div>
+
+    <div id="view-feedback" class="feedback-overlay hidden">
+        <div class="feedback-card">
+            <h2 style="margin-bottom: 10px;">Treino Concluído! 🔥</h2>
+            <p style="color: #aaa; font-size: 0.9rem;">Como você sentiu a intensidade?</p>
+            
+            <div class="rpe-scale" id="rpeContainer">
+                <button class="rpe-btn" data-val="1" style="background: #2ecc71;">1</button>
+                <button class="rpe-btn" data-val="2" style="background: #a9dfbf; color:black;">2</button>
+                <button class="rpe-btn" data-val="3" style="background: #f1c40f; color:black;">3</button>
+                <button class="rpe-btn" data-val="4" style="background: #e67e22;">4</button>
+                <button class="rpe-btn" data-val="5" style="background: #e74c3c;">5</button>
+            </div>
+            <p id="rpeText" style="font-size: 0.8rem; margin-bottom: 20px; font-style: italic;">Selecione uma nota...</p>
+
+            <textarea id="feedbackComment" class="form-input" rows="3" placeholder="Observações (ex: Senti dor no ombro, aumentei peso no supino...)" style="background: #000; border:1px solid #333; color:white; width:100%; margin-bottom: 1rem;"></textarea>
+
+            <button id="submitFeedbackBtn" class="btn-login">SALVAR TUDO</button>
+        </div>
+    </div>
 
     <div id="restTimer" class="timer-overlay">
         <div>
             <div style="font-size: 0.8rem; color: #aaa;">Descanso</div>
-            <div id="timerDisplay" class="timer-display">00:00</div>
+            <div id="timerDisplay" style="font-size: 1.5rem; font-weight: bold; color: var(--primary-color);">00:00</div>
         </div>
-        <div style="display: gap: 10px;">
+        <div style="display: flex; gap: 10px;">
             <button onclick="addTime(10)" style="padding: 5px 10px; background: #333; color: white; border: none; border-radius: 4px;">+10s</button>
             <button id="closeTimerBtn" style="padding: 5px 10px; background: #ff4d4d; color: white; border: none; border-radius: 4px;">Parar</button>
         </div>
