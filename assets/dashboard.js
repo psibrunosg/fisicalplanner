@@ -363,21 +363,16 @@ document.addEventListener("DOMContentLoaded", async () => {
                 displayString = `${s} x ${r}`; meta1 = s; meta2 = r;
             }
 
-            currentWorkoutBuild.push({
-                id: fullExercise.id, exercise: fullExercise.name, target: fullExercise.target || 'Geral',
-                type: type, displayString: displayString, val1: meta1, val2: meta2
-            });
-            renderWorkoutPreview();
+            // AQUI ESTAVA O ERRO: Havia dois pushs. Agora só tem um, completo.
             currentWorkoutBuild.push({
                 id: fullExercise.id, 
                 exercise: fullExercise.name, 
                 target: fullExercise.target || 'Geral',
                 
-                // === NOVIDADE: SALVANDO A IMAGEM E A INSTRUÇÃO ===
-                img: fullExercise.img || "", // Salva o caminho do GIF
+                // Salva Imagem e Instrução
+                img: fullExercise.img || "", 
                 instructions: fullExercise.instructions || "Siga a orientação do treinador.",
-                // ==================================================
-
+                
                 type: type, 
                 displayString: displayString, 
                 val1: meta1, 
