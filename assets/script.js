@@ -46,15 +46,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 setTimeout(() => {
                     // VERIFICA SE É ADMIN
-                    if (user.workoutType === "admin_dashboard") {
-                        window.location.href = "dashboard.html";
-                    } else {
-                        // Se for aluno comum (criaremos user-dashboard.html depois)
-                        alert("Login de Aluno! (Página em construção, indo para admin por enquanto para teste)");
-                        // Por enquanto, mande para dashboard também para você ver funcionando, 
-                        // ou deixe um alert.
-                        window.location.href = "dashboard.html"; 
-                    }
+                    // VERIFICA O TIPO DE USUÁRIO
+                if (user.workoutType === "admin_dashboard") {
+                    window.location.href = "dashboard.html"; // Vai para o Painel Admin
+                } else {
+                    window.location.href = "user-dashboard.html"; // Vai para o App do Aluno
+                }
                 }, 1500);
 
             } else {
