@@ -1,6 +1,6 @@
 // Importa as funções do Firebase (Versão Modular)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getDatabase, ref, set, get, child, update } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+import { getDatabase, ref, set, get, child, update, push } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";;
 
 // COLE SUA CONFIGURAÇÃO AQUI (Substitua isso pelo que copiou do console)
 const firebaseConfig = {
@@ -19,4 +19,5 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // Exporta para os outros arquivos usarem
-export { db, ref, set, get, child, update };
+// IMPORTANTE: O 'push' AGORA ESTÁ AQUI
+export { db, ref, set, get, child, update, push };
