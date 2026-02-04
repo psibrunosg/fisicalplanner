@@ -1,8 +1,8 @@
-// IMPORTANTE: Importando a conexão com o banco de dados
-import { db, ref, update } from "./firebase.js";
+// Importa as funções necessárias do Firebase
+import { db, ref, update, get, child } from "./firebase.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // === 1. VERIFICAÇÃO DE SEGURANÇA ===
+    // === 1. VERIFICAÇÃO DE SEGURANÇA (Mantém igual) ===
     const adminUser = JSON.parse(localStorage.getItem("fitUser"));
     if (!adminUser || adminUser.workoutType !== "admin_dashboard") {
         window.location.href = "index.html";
@@ -22,19 +22,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     // === 2. GERENCIAMENTO DE DADOS ===
     let dbUsers = [];
     let dbExercises = [];
-    let currentWorkoutBuild = []; // Lista temporária do treino
+    let currentWorkoutBuild = [];
 
     async function initData() {
-        // Carrega USUÁRIOS do seu JSON no GitHub (Para preencher a lista de opções)
+        // --- AQUI ESTÁ A MUDANÇA: BUSCAR DO FIREBASE ---
         try {
-            const res = await fetch('https://psibrunosg.github.io/fisicalplanner/user/users.json');
-            dbUsers = await res.json();
-        } catch (e) { 
-            console.error("Erro ao carregar users.json:", e); 
-            alert("Erro ao carregar lista de alunos. Verifique o console.");
+            const dbRef = ref(db);
+            // Busca o nó "users" inteiro
+            const snapshot = await get(child(dbRef, 'users'));
+            
+            if (snapshot.exists()) {
+                // O Firebase retorna um Objeto { "id-do-usuario": {dados}, ... }
+                // Precisamos transformar isso em um Array [ {dados}, ... ] para o nosso código ler
+                const usersObj = snapshot.val();
+                dbUsers = Object.values(usersObj); 
+            } else {
+                console.log("Nenhum usuário encontrado no banco.");
+            }
+        } catch (error) {
+            console.error("Erro ao buscar usuários do Firebase:", error);
+            alert("Erro ao carregar lista de alunos.");
         }
 
-        // Carrega EXERCÍCIOS do seu JSON no GitHub
+        // --- CARREGAR EXERCÍCIOS (Continua do JSON por enquanto) ---
+        // Se quiser migrar os exercícios para o Firebase depois, o processo é o mesmo.
         try {
             const res = await fetch('https://psibrunosg.github.io/fisicalplanner/data/exercises.json');
             dbExercises = await res.json();
@@ -45,53 +56,55 @@ document.addEventListener("DOMContentLoaded", async () => {
         renderDashboard();
     }
 
-    // === 3. RENDERIZAÇÃO DA TELA ===
+    // === 3. RENDERIZAÇÃO DA TELA (Mantém a lógica visual) ===
     function renderDashboard() {
-        // Atualiza Cards
+        // Atualiza contadores
         const totalEl = document.getElementById("totalUsers");
-        if(totalEl) totalEl.innerText = dbUsers.length;
+        // Filtra para não contar o admin como aluno
+        const totalStudents = dbUsers.filter(u => u.workoutType !== 'admin_dashboard').length;
+        if(totalEl) totalEl.innerText = totalStudents;
 
-        // Preenche Tabela de Usuários
+        // Preenche Tabela
         const tableBody = document.getElementById("userTableBody");
         if(tableBody) {
             tableBody.innerHTML = "";
             
-            // Preenche Select de Alunos (No criador de treinos)
             const studentSelect = document.getElementById("studentSelect");
             studentSelect.innerHTML = '<option value="">Selecione um aluno...</option>';
 
             dbUsers.forEach(user => {
-                // Tabela (Ignora admin)
-                const isAdm = user.workoutType === 'admin_dashboard';
-                if(isAdm) return; 
+                // Ignora o admin na lista
+                if(user.workoutType === 'admin_dashboard') return; 
+
+                // Prepara avatar
+                const avatarUrl = user.avatar || `https://ui-avatars.com/api/?name=${user.name.replace(" ", "+")}`;
 
                 const row = `
                     <tr>
                         <td style="display: flex; align-items: center; gap: 10px;">
-                            <img src="${user.avatar || 'https://ui-avatars.com/api/?name=User'}" style="width: 30px; border-radius: 50%;">
+                            <img src="${avatarUrl}" style="width: 30px; border-radius: 50%;">
                             ${user.name}
                         </td>
                         <td>${user.email}</td>
-                        <td>${user.workoutType || 'Padrão'}</td>
+                        <td>${user.workoutType === 'iniciante' ? 'Padrão (Iniciante)' : user.workoutType}</td>
                         <td><span class="status-badge status-active">ATIVO</span></td>
                     </tr>
                 `;
                 tableBody.innerHTML += row;
 
-                // Select Dropdown
+                // Preenche o Dropdown de Seleção para criar treino
                 const option = document.createElement("option");
-                option.value = user.email; // O e-mail será a chave
+                option.value = user.email; 
                 option.innerText = user.name;
                 studentSelect.appendChild(option);
             });
         }
 
-        updateExerciseSelect(); // Carrega lista de exercícios no dropdown
+        updateExerciseSelect();
     }
 
-    // === 4. LÓGICA DO CRIADOR DE TREINOS ===
+    // === 4. LÓGICA DO CRIADOR DE TREINOS (Mantém igual) ===
     
-    // Filtro de Grupo Muscular
     const muscleFilter = document.getElementById("muscleFilter");
     if(muscleFilter) muscleFilter.addEventListener("change", updateExerciseSelect);
 
@@ -112,7 +125,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Adicionar Exercício à Lista Temporária
+    // Botão Adicionar Exercício
     document.getElementById("addExerciseBtn").addEventListener("click", () => {
         const exName = document.getElementById("exerciseSelect").value;
         const sets = document.getElementById("sets").value;
@@ -156,38 +169,39 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Função global para remover itens da lista
     window.removeExercise = (index) => {
         currentWorkoutBuild.splice(index, 1);
         renderWorkoutPreview();
     };
 
-    // === 5. SALVAR NO FIREBASE (AQUI ESTÁ A MUDANÇA) ===
+    // === 5. SALVAR NO FIREBASE ===
     document.getElementById("saveWorkoutBtn").addEventListener("click", () => {
         const selectedEmail = document.getElementById("studentSelect").value;
         
         if (!selectedEmail) return alert("Selecione um aluno para salvar o treino!");
         if (currentWorkoutBuild.length === 0) return alert("O treino está vazio!");
 
-        // Feedback visual
         const btnSave = document.getElementById("saveWorkoutBtn");
         const originalText = btnSave.innerText;
-        btnSave.innerText = "SALVANDO NA NUVEM...";
+        btnSave.innerText = "SALVANDO...";
         btnSave.disabled = true;
 
-        // Criamos uma ID segura para o Firebase (sem pontos ou @)
-        // Ex: joao@email.com vira joao-at-email-com
+        // Cria ID segura (ex: joao@email.com -> joao-at-email-com)
         const userId = selectedEmail.replace(/\./g, '-').replace(/@/g, '-at-');
 
-        // Manda pro Firebase
+        // Atualiza APENAS o campo customWorkout e lastUpdate desse usuário
         update(ref(db, 'users/' + userId), {
             customWorkout: currentWorkoutBuild,
+            workoutType: 'Personalizado', // Muda o status para sabermos que tem treino
             lastUpdate: new Date().toISOString()
         })
         .then(() => {
-            alert("Treino salvo na Nuvem com sucesso! O aluno já pode ver no app.");
+            alert("Treino enviado para o aluno com sucesso!");
             currentWorkoutBuild = [];
             renderWorkoutPreview();
+            
+            // Recarrega a lista para atualizar o status na tabela visualmente
+            initData();
         })
         .catch((error) => {
             alert("Erro ao salvar: " + error.message);
@@ -198,6 +212,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
-    // Inicializa tudo
+    // Inicia tudo
     initData();
 });
