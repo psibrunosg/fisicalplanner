@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             } catch (e) { alert("Erro: " + e.message); }
             finally { btn.innerText = "SALVAR FICHA COMPLETA"; }
         });
-    } // <--- AQUI ESTAVA FALTANDO A CHAVE NO SEU CÓDIGO ANTERIOR!
+    } 
 
 
     // --- FUNÇÃO 3: EXECUÇÃO DO TREINO (MODO FOCO) ---
@@ -182,6 +182,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
+    // ==========================================================
+    // === AQUI ESTAVA O ERRO - FUNÇÃO CORRIGIDA ===
+    // ==========================================================
     function renderExercises(workout) {
         const list = document.getElementById("workoutList");
         list.innerHTML = "";
@@ -194,54 +197,15 @@ document.addEventListener("DOMContentLoaded", async () => {
             const card = document.createElement("div");
             card.style.cssText = "background:var(--surface-color); padding:1rem; border-radius:12px; margin-bottom:1rem; border:1px solid rgba(255,255,255,0.05);";
             
+            // 1. Ícones
             let icon = '<i class="ph ph-barbell"></i>';
             if(ex.type === 'cardio') icon = '<i class="ph ph-sneaker-move"></i>';
             if(ex.type === 'crossfit') icon = '<i class="ph ph-fire"></i>';
 
-            card.innerHTML = `
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-                    <span style="color:var(--primary-color); font-size:1.2rem;">${icon}</span>
-                    <div>
-                        <h3 style="font-size:1rem; color:white;">${ex.exercise}</h3>
-                        <span style="font-size:0.8rem; color:#888;">${ex.displayString || ''}</span>
-                    </div>
-                </div>
-                <div id="sets-container-${idx}"></div>
-            `;
-            list.appendChild(card);
+            // 2. Imagem (Com placeholder seguro)
+            const imgSource = ex.img || "https://placehold.co/600x400/EEE/31343C?text=FitLife";
 
-            const container = card.querySelector(`#sets-container-${idx}`);
-            
-            if(ex.type === 'cardio' || ex.type === 'crossfit') {
-                 container.innerHTML = `
-                    <div style="display:flex; gap:10px; align-items:center; background:rgba(0,0,0,0.3); padding:10px; border-radius:8px;">
-                        <input type="text" placeholder="Resultado (ex: 5km)" style="flex:1; background:#000; border:1px solid #333; color:white; padding:8px; border-radius:6px;">
-                        <div class="check-box" onclick="window.toggleCheck(this)" style="width:40px; height:40px; background:#222; border:1px solid #444; border-radius:6px; display:flex; align-items:center; justify-content:center;">
-                            <i class="ph ph-check" style="display:none; color:black;"></i>
-                        </div>
-                    </div>`;
-            } else {
-                // Se val1 não existir (treino antigo), usa sets ou padrão 3
-                const sets = parseInt(ex.val1 || ex.sets) || 3; 
-                for(let i=1; i<=sets; i++) {
-                    const row = document.createElement("div");
-                    row.style.cssText = "display:grid; grid-template-columns: 20px 1fr 1fr 40px; gap:10px; align-items:center; margin-bottom:8px;";
-                    row.innerHTML = `
-                        <span style="color:#555; font-size:0.8rem;">${i}</span>
-                        <input type="number" placeholder="kg" style="background:#000; border:1px solid #333; color:white; padding:8px; border-radius:6px; width:100%;">
-                        <input type="number" value="${ex.val2 || ex.reps || 12}" style="background:#000; border:1px solid #333; color:white; padding:8px; border-radius:6px; width:100%;">
-                        <div class="check-box" onclick="window.toggleCheck(this)" style="width:40px; height:35px; background:#222; border:1px solid #444; border-radius:6px; display:flex; align-items:center; justify-content:center;">
-                            <i class="ph ph-check" style="display:none; color:black;"></i>
-                        </div>
-                    `;
-                    container.appendChild(row);
-                }
-            }
-        });
-            // Tenta pegar a imagem salva no treino OU usa um placeholder se for treino antigo
-            const imgSource = ex.img || "assets/img/logo-placeholder.png"; 
-            // DICA: Se não tiver imagem, pode usar um logo da sua marca ou deixar vazio.
-
+            // 3. Monta o HTML do Card (Header + Detalhes + Inputs)
             card.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; cursor:pointer;" onclick="toggleDetails('details-${idx}')">
                     <div style="display:flex; gap:12px; align-items:center; flex:1;">
@@ -274,7 +238,35 @@ document.addEventListener("DOMContentLoaded", async () => {
             `;
             
             list.appendChild(card);
+
+            // 4. Lógica para preencher os inputs (Séries/Repetições)
+            const container = card.querySelector(`#sets-container-${idx}`);
             
+            if(ex.type === 'cardio' || ex.type === 'crossfit') {
+                 container.innerHTML = `
+                    <div style="display:flex; gap:10px; align-items:center; background:rgba(0,0,0,0.3); padding:10px; border-radius:8px;">
+                        <input type="text" placeholder="Resultado (ex: 5km)" style="flex:1; background:#000; border:1px solid #333; color:white; padding:8px; border-radius:6px;">
+                        <div class="check-box" onclick="window.toggleCheck(this)" style="width:40px; height:40px; background:#222; border:1px solid #444; border-radius:6px; display:flex; align-items:center; justify-content:center;">
+                            <i class="ph ph-check" style="display:none; color:black;"></i>
+                        </div>
+                    </div>`;
+            } else {
+                const sets = parseInt(ex.val1 || ex.sets) || 3; 
+                for(let i=1; i<=sets; i++) {
+                    const row = document.createElement("div");
+                    row.style.cssText = "display:grid; grid-template-columns: 20px 1fr 1fr 40px; gap:10px; align-items:center; margin-bottom:8px;";
+                    row.innerHTML = `
+                        <span style="color:#555; font-size:0.8rem;">${i}</span>
+                        <input type="number" placeholder="kg" style="background:#000; border:1px solid #333; color:white; padding:8px; border-radius:6px; width:100%;">
+                        <input type="number" value="${ex.val2 || ex.reps || 12}" style="background:#000; border:1px solid #333; color:white; padding:8px; border-radius:6px; width:100%;">
+                        <div class="check-box" onclick="window.toggleCheck(this)" style="width:40px; height:35px; background:#222; border:1px solid #444; border-radius:6px; display:flex; align-items:center; justify-content:center;">
+                            <i class="ph ph-check" style="display:none; color:black;"></i>
+                        </div>
+                    `;
+                    container.appendChild(row);
+                }
+            }
+        }); // FIM DO LOOP FOREACH
     }
 
     // --- FUNÇÕES GLOBAIS (TIMER, ETC) ---
@@ -297,13 +289,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     function startRestTimer(seconds) {
         clearInterval(timerInterval);
         let rem = seconds;
-        timerDiv.classList.add("active");
+        if(timerDiv) timerDiv.classList.add("active");
         timerInterval = setInterval(() => {
             rem--;
             const m = Math.floor(rem/60).toString().padStart(2,'0');
             const s = (rem%60).toString().padStart(2,'0');
             if(timerDisplay) timerDisplay.innerText = `${m}:${s}`;
-            if(rem <= 0) { clearInterval(timerInterval); timerDiv.classList.remove("active"); }
+            if(rem <= 0) { clearInterval(timerInterval); if(timerDiv) timerDiv.classList.remove("active"); }
         }, 1000);
     }
     
@@ -351,6 +343,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.location.reload();
         } catch(e) { alert("Erro: " + e.message); }
     });
+
     // === 5. CARREGAR AVALIAÇÃO FÍSICA ===
     async function loadAssessmentData() {
         try {
@@ -358,23 +351,19 @@ document.addEventListener("DOMContentLoaded", async () => {
             
             if (snapshot.exists()) {
                 const data = snapshot.val();
-                // Pega a última avaliação (a mais recente baseada na chave ou data)
                 const assessments = Object.values(data);
-                const latest = assessments[assessments.length - 1]; // Pega o último array
+                const latest = assessments[assessments.length - 1];
 
-                // Preenche Card Principal
                 if(latest.bio) {
                     document.getElementById("userWeight").innerText = latest.bio.weight || "--";
                     document.getElementById("userFat").innerText = latest.bio.fat || "--";
                     document.getElementById("userBMI").innerText = latest.bio.bmi || "--";
                     document.getElementById("userMuscle").innerText = latest.bio.muscle || "--";
                 } else if (latest.basic) {
-                    // Fallback para estrutura antiga se houver
                     document.getElementById("userWeight").innerText = latest.basic.weight || "--";
                     document.getElementById("userBMI").innerText = latest.basic.bmi || "--";
                 }
 
-                // Preenche Perímetros
                 if(latest.circ) {
                     document.getElementById("res_shoulder").innerText = latest.circ.shoulder || "--";
                     document.getElementById("res_waist").innerText = latest.circ.waist || "--";
@@ -382,25 +371,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                     document.getElementById("res_thigh").innerText = latest.circ.thigh_r || "--";
                 }
 
-                // Data
                 const date = new Date(latest.date).toLocaleDateString('pt-BR');
                 document.getElementById("lastAvalDate").innerText = date;
             } else {
-                // Se não tiver avaliação
                 document.getElementById("userWeight").innerText = "-";
             }
         } catch (error) {
             console.error("Erro ao carregar avaliação:", error);
         }
     }
-    // Função global para abrir/fechar o card
+
+    // Função global para abrir/fechar o card (AGORA ELA ESTÁ NO ESCOPO GLOBAL CORRETO)
     window.toggleDetails = (id) => {
-    const el = document.getElementById(id);
-    if(el) {
-        el.classList.toggle('hidden');
-        // Opcional: Trocar o ícone da setinha se quiser ser perfeccionista
-    }
-};
+        const el = document.getElementById(id);
+        if(el) {
+            el.classList.toggle('hidden');
+        }
+    };
+
     // CHAMA A FUNÇÃO AO INICIAR
     loadAssessmentData();
 });
