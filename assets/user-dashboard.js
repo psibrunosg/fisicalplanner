@@ -238,6 +238,43 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
             }
         });
+            // Tenta pegar a imagem salva no treino OU usa um placeholder se for treino antigo
+            const imgSource = ex.img || "assets/img/logo-placeholder.png"; 
+            // DICA: Se não tiver imagem, pode usar um logo da sua marca ou deixar vazio.
+
+            card.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; cursor:pointer;" onclick="toggleDetails('details-${idx}')">
+                    <div style="display:flex; gap:12px; align-items:center; flex:1;">
+                        <div style="background:rgba(255,255,255,0.1); width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--primary-color);">
+                            ${icon}
+                        </div>
+                        <div>
+                            <h3 style="font-size:1rem; color:white; margin:0; line-height:1.2;">${ex.exercise}</h3>
+                            <span style="font-size:0.8rem; color:#aaa;">${ex.displayString || ''}</span>
+                        </div>
+                    </div>
+                    <i class="ph ph-caret-down" style="color:#666;"></i>
+                </div>
+
+                <div id="details-${idx}" class="hidden" style="background:#fff; border-radius:12px; margin-bottom:15px; overflow:hidden; border:1px solid #333; animation: fadeIn 0.3s;">
+                    
+                    <div style="background:white; padding:10px; display:flex; justify-content:center; align-items:center; border-bottom:1px solid #eee;">
+                        <img src="${imgSource}" style="max-width:100%; max-height:220px; object-fit:contain;" onerror="this.style.display='none'">
+                    </div>
+                    
+                    <div style="padding:15px; background:var(--surface-color);">
+                        <p style="font-size:0.9rem; color:#ddd; line-height:1.5; margin:0;">
+                            <strong style="color:var(--primary-color);">Como fazer:</strong><br>
+                            ${ex.instructions || "Execute o movimento com controle e amplitude total."}
+                        </p>
+                    </div>
+                </div>
+
+                <div id="sets-container-${idx}" style="margin-top:10px;"></div>
+            `;
+            
+            list.appendChild(card);
+            
     }
 
     // --- FUNÇÕES GLOBAIS (TIMER, ETC) ---
@@ -356,7 +393,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error("Erro ao carregar avaliação:", error);
         }
     }
-
+    // Função global para abrir/fechar o card
+    window.toggleDetails = (id) => {
+    const el = document.getElementById(id);
+    if(el) {
+        el.classList.toggle('hidden');
+        // Opcional: Trocar o ícone da setinha se quiser ser perfeccionista
+    }
+};
     // CHAMA A FUNÇÃO AO INICIAR
     loadAssessmentData();
 });
