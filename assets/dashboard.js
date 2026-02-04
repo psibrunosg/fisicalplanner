@@ -1,14 +1,23 @@
 import { db, ref, update, get, child, remove, push, set } from "./firebase.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
+    
+    // === CONFIGURAÇÃO: ID DO TREINADOR PRINCIPAL (TREINADOR A) ===
+    // IMPORTANTE: Substitua pelo ID do admin principal (ex: 'admin-at-fitlife-com')
+    // Isso garante que o Treinador A veja os alunos que se cadastraram sozinhos no site.
+    const MASTER_TRAINER_ID = "admin-at-fitlife-com"; 
+
     // 1. SEGURANÇA
-    const adminUser = JSON.parse(localStorage.getItem("fitUser"));
-    if (!adminUser || adminUser.workoutType !== "admin_dashboard") {
+    const sessionUser = JSON.parse(localStorage.getItem("fitUser"));
+    if (!sessionUser || sessionUser.workoutType !== "admin_dashboard") {
         window.location.href = "index.html";
         return;
     }
 
-    document.getElementById("adminName").innerText = adminUser.name.split(" ")[0];
+    // ID do Treinador Logado agora
+    const currentTrainerId = sessionUser.email.replace(/\./g, '-').replace(/@/g, '-at-');
+
+    document.getElementById("adminName").innerText = sessionUser.name.split(" ")[0];
     document.getElementById("logoutBtn").addEventListener("click", () => {
         localStorage.removeItem("fitUser");
         window.location.href = "index.html";
@@ -40,12 +49,29 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function initData() {
         try {
+            // Pega todos os usuários
             const snapshot = await get(child(ref(db), 'users'));
-            if (snapshot.exists()) dbUsers = Object.values(snapshot.val());
+            if (snapshot.exists()) {
+                const allUsers = Object.values(snapshot.val());
+                
+                // === FILTRO DE TREINADORES ===
+                dbUsers = allUsers.filter(user => {
+                    // Ignora outros admins/treinadores na lista de alunos
+                    if (user.workoutType === 'admin_dashboard') return false;
+
+                    // 1. É aluno deste treinador?
+                    if (user.trainerId === currentTrainerId) return true;
+
+                    // 2. É o Treinador A (Master) e o aluno não tem treinador (veio do site)?
+                    if (currentTrainerId === MASTER_TRAINER_ID && !user.trainerId) return true;
+
+                    return false;
+                });
+            }
         } catch (error) { console.error("Erro users:", error); }
 
         try {
-            const res = await fetch('https://psibrunosg.github.io/fisicalplanner/data/exercises.json');
+            const res = await fetch('data/exercises.json'); // Ajustado para caminho local padrão se necessário
             dbExercises = await res.json();
         } catch (e) { console.error("Erro exercises:", e); }
 
@@ -59,9 +85,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         if(!tableBody) return;
         
         tableBody.innerHTML = "";
-        const students = dbUsers.filter(u => u.workoutType !== 'admin_dashboard');
+        // dbUsers já está filtrado aqui
+        const students = dbUsers;
         
-        // --- CÁLCULO DE MÉTRICAS (AJUSTADO) ---
+        // --- CÁLCULO DE MÉTRICAS ---
         let totalUsers = students.length;
         let totalProtocols = 0;
         let weeklyWorkouts = 0;
@@ -125,8 +152,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const select = document.getElementById("assessmentStudentSelect");
         if(!select) return;
         select.innerHTML = '<option value="">Selecione...</option>';
-        const students = dbUsers.filter(u => u.workoutType !== 'admin_dashboard');
-        students.forEach(u => {
+        // Usa a lista já filtrada
+        dbUsers.forEach(u => {
             const opt = document.createElement("option");
             opt.value = u.email; opt.innerText = u.name;
             select.appendChild(opt);
@@ -142,7 +169,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Cálculos de Avaliação (Simplificado para o exemplo, adicione os outros inputs se precisar)
+    // Cálculos de Avaliação
     const weightInput = document.getElementById("aval_weight");
     const heightInput = document.getElementById("aval_height");
     
@@ -152,12 +179,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             const h = parseFloat(heightInput.value) / 100;
             if(w && h) document.getElementById("aval_bmi").value = (w / (h*h)).toFixed(2);
             
-            // Lógica Pollock simplificada (só para demonstrar)
+            // Lógica Pollock simplificada
             const triceps = parseFloat(document.getElementById("fold_triceps")?.value || 0);
             const abd = parseFloat(document.getElementById("fold_abdominal")?.value || 0);
             const supra = parseFloat(document.getElementById("fold_suprailiac")?.value || 0);
             if(triceps && abd && supra) {
-                // Exemplo fake de cálculo, use a fórmula real completa se quiser precisão
                 const sum = triceps + abd + supra;
                 document.getElementById("aval_fat_perc").value = (sum * 0.2 + 5).toFixed(1);
             }
@@ -239,12 +265,20 @@ document.addEventListener("DOMContentLoaded", async () => {
             if(!name || !email || !password) return alert("Preencha tudo!");
 
             createBtn.innerText = "CRIANDO...";
-            const userId = email.replace(/\./g, '-').replace(/@/g, '-at-');
+            const newUserId = email.replace(/\./g, '-').replace(/@/g, '-at-');
 
             try {
-                await set(ref(db, 'users/' + userId), {
-                    name: name, email: email, password: password,
-                    createdAt: new Date().toISOString(), workoutType: "Personalizado",
+                await set(ref(db, 'users/' + newUserId), {
+                    name: name,
+                    email: email,
+                    password: password,
+                    createdAt: new Date().toISOString(),
+                    workoutType: "Personalizado",
+                    
+                    // === ATRIBUIÇÃO DE TREINADOR ===
+                    trainerId: currentTrainerId, // O aluno pertence a quem criou
+                    // ==============================
+
                     avatar: `https://ui-avatars.com/api/?name=${name.replace(" ", "+")}&background=random`
                 });
                 alert("Criado!");
@@ -287,7 +321,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
         }
         
-        // Preenche perfil atual
         const adm = JSON.parse(localStorage.getItem("fitUser"));
         if(adm && document.getElementById("conf_adminName")) {
             document.getElementById("conf_adminName").value = adm.name;
@@ -339,7 +372,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     let currentWorkoutBuild = [];
-    // Adicionar Exercício
     const addExBtn = document.getElementById("addExerciseBtn");
     if(addExBtn) {
         addExBtn.addEventListener("click", () => {
@@ -363,7 +395,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 displayString = `${s} x ${r}`; meta1 = s; meta2 = r;
             }
 
-            // AQUI ESTAVA O ERRO: Havia dois pushs. Agora só tem um, completo.
+            // BLOCO ÚNICO DE PUSH (Corrigido para não duplicar)
             currentWorkoutBuild.push({
                 id: fullExercise.id, 
                 exercise: fullExercise.name, 
@@ -415,13 +447,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 alert("Treino Salvo!");
                 currentWorkoutBuild = [];
                 renderWorkoutPreview();
-                // Simula clique no select para atualizar lista de exclusão
                 studentSelect.dispatchEvent(new Event('change'));
             });
         });
     }
     
-    // Gerenciador de Exclusão de Treinos
     const studSel = document.getElementById("studentSelect");
     if (studSel) {
         studSel.addEventListener("change", async () => {
