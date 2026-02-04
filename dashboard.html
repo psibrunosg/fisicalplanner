@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     
     <style>
-        /* CSS EXTRA PARA SWITCH DE TEMA E MODAL (Caso não tenha atualizado o style.css) */
+        /* CSS EXTRA PARA SWITCH DE TEMA E MODAL */
         .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
@@ -18,7 +18,6 @@
         input:checked + .slider { background-color: var(--primary-color); }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        /* Modal Styles Inline para garantir */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
@@ -33,6 +32,9 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .modal-overlay.active .modal-box { transform: translateY(0); }
+        
+        /* Classe utilitária para esconder seções */
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -45,7 +47,6 @@
             
             <nav class="sidebar-menu">
                 <a href="#" class="nav-link active" data-target="overview-section"><i class="ph ph-squares-four"></i> Visão Geral</a>
-                <a href="#" class="nav-link" data-target="users-section"><i class="ph ph-users"></i> Alunos</a>
                 <a href="#" class="nav-link" data-target="workout-section"><i class="ph ph-barbell"></i> Treinos</a>
                 <a href="#" class="nav-link" data-target="assessment-section"><i class="ph ph-ruler"></i> Avaliação Física</a>
                 <a href="#" class="nav-link" data-target="settings-section"><i class="ph ph-gear"></i> Configurações</a>
@@ -79,17 +80,17 @@
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon"><i class="ph ph-lightning"></i></div>
+                        <div class="stat-icon"><i class="ph ph-files"></i></div>
                         <div class="stat-info">
-                            <h3>Treinos Ativos</h3>
-                            <p>24</p>
+                            <h3>Protocolos Criados</h3>
+                            <p id="totalProtocols">0</p>
                         </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon"><i class="ph ph-chart-line-up"></i></div>
+                        <div class="stat-icon"><i class="ph ph-check-circle"></i></div>
                         <div class="stat-info">
-                            <h3>Novos neste mês</h3>
-                            <p>+12%</p>
+                            <h3>Treinos (Semana)</h3>
+                            <p id="weeklyWorkouts">0</p>
                         </div>
                     </div>
                 </section>
@@ -330,5 +331,11 @@
     </div>
 
     <script type="module" src="assets/dashboard.js"></script>
+    <script>
+        // Script simples visual para o Switch do Tema (Lógica real no dashboard.js)
+        document.getElementById('themeSwitch').addEventListener('change', function() {
+            // Apenas para efeito visual se necessário, lógica real está no dashboard.js
+        });
+    </script>
 </body>
 </html>
