@@ -42,16 +42,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         const cardsContainer = document.getElementById("workoutCardsContainer");
         cardsContainer.innerHTML = ""; 
 
-        // Prioridade 1: Estrutura Nova (Pastas A, B, C)
         if (userData.workouts) {
             Object.keys(userData.workouts).forEach(key => {
                 let workoutData = userData.workouts[key];
-                // Garante que é array
                 if (!Array.isArray(workoutData)) workoutData = Object.values(workoutData);
                 createWorkoutCard(key, workoutData);
             });
         } 
-        // Prioridade 2: Estrutura Antiga (Treino Único)
         else if (userData.customWorkout) {
             let workoutData = userData.customWorkout;
             if (!Array.isArray(workoutData)) workoutData = Object.values(workoutData);
@@ -110,7 +107,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.location.href = "index.html";
         });
 
-        // --- LÓGICA DA ANAMNESE (DENTRO DA NAVEGAÇÃO) ---
+        // --- LÓGICA DA ANAMNESE ---
         if (userData.anamnese) {
             const a = userData.anamnese;
             if(document.getElementById("anm_occupation")) document.getElementById("anm_occupation").value = a.occupation || "";
@@ -183,7 +180,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // ==========================================================
-    // === AQUI ESTAVA O ERRO - FUNÇÃO CORRIGIDA ===
+    // === CORREÇÃO DO ERRO "ex is not defined" AQUI ===
     // ==========================================================
     function renderExercises(workout) {
         const list = document.getElementById("workoutList");
@@ -194,18 +191,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         safeWorkout.forEach((ex, idx) => {
             if (!ex) return; 
 
+            // 1. TENTA PEGAR A IMAGEM DO EXERCÍCIO (Do JSON salvo no treino)
+            // Se não tiver imagem, usa um placeholder genérico
+            const imgSource = ex.img || "https://placehold.co/600x400/EEE/31343C?text=Sem+Imagem";
+
             const card = document.createElement("div");
             card.style.cssText = "background:var(--surface-color); padding:1rem; border-radius:12px; margin-bottom:1rem; border:1px solid rgba(255,255,255,0.05);";
             
-            // 1. Ícones
             let icon = '<i class="ph ph-barbell"></i>';
             if(ex.type === 'cardio') icon = '<i class="ph ph-sneaker-move"></i>';
             if(ex.type === 'crossfit') icon = '<i class="ph ph-fire"></i>';
 
-            // 2. Imagem (Com placeholder seguro)
-            const imgSource = ex.img || "https://placehold.co/600x400/EEE/31343C?text=FitLife";
-
-            // 3. Monta o HTML do Card (Header + Detalhes + Inputs)
+            // 2. MONTA O HTML DO CARD (Com a imagem e a instrução)
             card.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; cursor:pointer;" onclick="toggleDetails('details-${idx}')">
                     <div style="display:flex; gap:12px; align-items:center; flex:1;">
@@ -223,13 +220,13 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <div id="details-${idx}" class="hidden" style="background:#fff; border-radius:12px; margin-bottom:15px; overflow:hidden; border:1px solid #333; animation: fadeIn 0.3s;">
                     
                     <div style="background:white; padding:10px; display:flex; justify-content:center; align-items:center; border-bottom:1px solid #eee;">
-                        <img src="${imgSource}" style="max-width:100%; max-height:220px; object-fit:contain;" onerror="this.style.display='none'">
+                        <img src="${imgSource}" style="max-width:100%; max-height:250px; object-fit:contain;" onerror="this.style.display='none'">
                     </div>
                     
                     <div style="padding:15px; background:var(--surface-color);">
                         <p style="font-size:0.9rem; color:#ddd; line-height:1.5; margin:0;">
                             <strong style="color:var(--primary-color);">Como fazer:</strong><br>
-                            ${ex.instructions || "Execute o movimento com controle e amplitude total."}
+                            ${ex.instructions || "Siga a orientação do treinador."}
                         </p>
                     </div>
                 </div>
@@ -239,7 +236,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             
             list.appendChild(card);
 
-            // 4. Lógica para preencher os inputs (Séries/Repetições)
+            // 3. PREENCHE AS SÉRIES
             const container = card.querySelector(`#sets-container-${idx}`);
             
             if(ex.type === 'cardio' || ex.type === 'crossfit') {
@@ -266,10 +263,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                     container.appendChild(row);
                 }
             }
-        }); // FIM DO LOOP FOREACH
+        }); // FIM DO LOOP FOREACH (AQUI E A CHAVE MÁGICA)
     }
 
-    // --- FUNÇÕES GLOBAIS (TIMER, ETC) ---
+    // --- FUNÇÕES GLOBAIS ---
     window.toggleCheck = (el) => {
         const icon = el.querySelector("i");
         if(icon.style.display === "none") {
@@ -381,7 +378,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // Função global para abrir/fechar o card (AGORA ELA ESTÁ NO ESCOPO GLOBAL CORRETO)
+    // Função global para abrir/fechar o card (AGORA NO ESCOPO GLOBAL)
     window.toggleDetails = (id) => {
         const el = document.getElementById(id);
         if(el) {
