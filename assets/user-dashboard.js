@@ -7,116 +7,140 @@ document.addEventListener("DOMContentLoaded", async () => {
     const userId = sessionUser.email.replace(/\./g, '-').replace(/@/g, '-at-');
 
     // === 2. DADOS DO USUÁRIO ===
-    const dbRef = ref(db);
-    const snapshot = await get(child(dbRef, `users/${userId}`));
-    if (!snapshot.exists()) return alert("Erro ao carregar usuário.");
-    const userData = snapshot.val();
-
-    // Preenche Header e Sidebar
-    const firstName = userData.name.split(" ")[0];
-    const avatar = userData.avatar || `https://ui-avatars.com/api/?name=${firstName}`;
-    
-    document.getElementById("userName").innerText = firstName;
-    document.getElementById("headerAvatar").src = avatar;
-    document.getElementById("sidebarAvatar").src = avatar;
-    document.getElementById("sidebarName").innerText = userData.name;
-    document.getElementById("sidebarEmail").innerText = userData.email;
-
-    // === 3. LÓGICA DO MENU LATERAL ===
-    const menuBtn = document.getElementById("openMenuBtn");
-    const sidebar = document.getElementById("mobileSidebar");
-    const overlay = document.getElementById("sidebarOverlay");
-    const navLinks = document.querySelectorAll(".nav-link");
-    const sections = document.querySelectorAll(".view-section");
-
-    function toggleMenu() {
-        sidebar.classList.toggle("active");
-        overlay.classList.toggle("active");
-    }
-
-    menuBtn.addEventListener("click", toggleMenu);
-    overlay.addEventListener("click", toggleMenu);
-
-    // Navegação entre Telas
-    navLinks.forEach(link => {
-        link.addEventListener("click", (e) => {
-            e.preventDefault();
-            if(link.classList.contains("locked")) return; // Ignora links bloqueados
-
-            // Remove active de todos e adiciona no atual
-            navLinks.forEach(l => l.classList.remove("active"));
-            link.classList.add("active");
-
-            // Esconde todas as seções e mostra a alvo
-            const targetId = link.dataset.target;
-            sections.forEach(sec => sec.classList.add("hidden"));
-            document.getElementById(targetId).classList.remove("hidden");
-
-            toggleMenu(); // Fecha o menu
-        });
-    });
-
-    // Logout Sidebar
-    document.getElementById("logoutBtnSide").addEventListener("click", () => {
-        localStorage.removeItem("fitUser");
-        window.location.href = "index.html";
-    });
-
-    // === 4. LÓGICA DA ANAMNESE ===
-    // Carregar dados existentes
-    if (userData.anamnese) {
-        document.getElementById("anamneseGoal").value = userData.anamnese.goal || "saude";
-        document.getElementById("anamneseInjuries").value = userData.anamnese.injuries || "";
-        document.getElementById("anamneseMeds").value = userData.anamnese.meds || "";
-    }
-
-    // Salvar Anamnese
-    document.getElementById("saveAnamneseBtn").addEventListener("click", async () => {
-        const btn = document.getElementById("saveAnamneseBtn");
-        btn.innerText = "SALVANDO...";
+    try {
+        const dbRef = ref(db);
+        const snapshot = await get(child(dbRef, `users/${userId}`));
         
-        const anamneseData = {
-            goal: document.getElementById("anamneseGoal").value,
-            injuries: document.getElementById("anamneseInjuries").value,
-            meds: document.getElementById("anamneseMeds").value,
-            updatedAt: new Date().toISOString()
-        };
-
-        try {
-            await update(ref(db, `users/${userId}/anamnese`), anamneseData);
-            alert("Anamnese atualizada com sucesso!");
-        } catch (e) {
-            alert("Erro: " + e.message);
-        } finally {
-            btn.innerText = "SALVAR DADOS";
+        if (!snapshot.exists()) {
+            document.getElementById("workoutCardsContainer").innerHTML = "<p style='color:white'>Usuário não encontrado.</p>";
+            return;
         }
-    });
+        
+        const userData = snapshot.val();
 
-    // === 5. CARDS DA HOME E TREINO (Mantém lógica anterior adaptada) ===
-    const cardsContainer = document.getElementById("workoutCardsContainer");
-    cardsContainer.innerHTML = "";
+        // Preenche Header e Sidebar
+        const firstName = userData.name ? userData.name.split(" ")[0] : "Atleta";
+        const avatar = userData.avatar || `https://ui-avatars.com/api/?name=${firstName}`;
+        
+        document.getElementById("userName").innerText = firstName;
+        if(document.getElementById("headerAvatar")) document.getElementById("headerAvatar").src = avatar;
+        if(document.getElementById("sidebarAvatar")) document.getElementById("sidebarAvatar").src = avatar;
+        if(document.getElementById("sidebarName")) document.getElementById("sidebarName").innerText = userData.name;
+        if(document.getElementById("sidebarEmail")) document.getElementById("sidebarEmail").innerText = userData.email;
 
-    if (userData.workouts) {
-        Object.keys(userData.workouts).forEach(key => createWorkoutCard(key, userData.workouts[key]));
-    } else if (userData.customWorkout) {
-        createWorkoutCard("Treino Atual", userData.customWorkout);
-    } else {
-        cardsContainer.innerHTML = "<p>Sem treinos ainda.</p>";
+        // === 3. CARREGAR CARDS DE TREINO ===
+        renderHomeCards(userData);
+
+        // Configurar Menu e Navegação
+        setupNavigation(userData);
+
+    } catch (error) {
+        console.error("Erro fatal:", error);
+        alert("Erro ao carregar o sistema: " + error.message);
     }
 
-    function createWorkoutCard(name, data) {
-        const card = document.createElement("div");
-        card.className = "workout-card-select";
-        card.innerHTML = `
-            <div style="font-size:2rem; color:var(--primary-color); margin-bottom:10px;"><i class="ph ph-barbell"></i></div>
-            <h3 style="color:white; font-size:1.1rem;">${name}</h3>
-            <p style="color:#777; font-size:0.85rem;">${data.length} Exercícios</p>
-        `;
-        card.addEventListener("click", () => openWorkout(name, data));
-        cardsContainer.appendChild(card);
+    // --- FUNÇÃO DE RENDERIZAR CARDS ---
+    function renderHomeCards(userData) {
+        const cardsContainer = document.getElementById("workoutCardsContainer");
+        cardsContainer.innerHTML = ""; // Limpa o "Carregando..."
+
+        // Prioridade 1: Estrutura Nova (Workouts A, B, C...)
+        if (userData.workouts) {
+            Object.keys(userData.workouts).forEach(key => {
+                // CORREÇÃO: Garante que os dados sejam tratados, mesmo se vierem como Objeto
+                let workoutData = userData.workouts[key];
+                // Se não for array, transforma em array de valores
+                if (!Array.isArray(workoutData)) {
+                    workoutData = Object.values(workoutData);
+                }
+                createWorkoutCard(key, workoutData);
+            });
+        } 
+        // Prioridade 2: Estrutura Antiga (Treino Único)
+        else if (userData.customWorkout) {
+            let workoutData = userData.customWorkout;
+            if (!Array.isArray(workoutData)) workoutData = Object.values(workoutData);
+            createWorkoutCard("Treino Atual", workoutData);
+        } 
+        // Caso: Nenhum treino
+        else {
+            cardsContainer.innerHTML = "<p style='color:#777; width:100%; text-align:center;'>Nenhum treino disponível. Fale com seu treinador.</p>";
+        }
+
+        function createWorkoutCard(name, data) {
+            const card = document.createElement("div");
+            card.className = "workout-card-select";
+            card.innerHTML = `
+                <div style="font-size:2rem; color:var(--primary-color); margin-bottom:10px;"><i class="ph ph-barbell"></i></div>
+                <h3 style="color:white; font-size:1.1rem;">${name}</h3>
+                <p style="color:#777; font-size:0.85rem;">${data.length} Exercícios</p>
+            `;
+            card.addEventListener("click", () => openWorkout(name, data));
+            cardsContainer.appendChild(card);
+        }
     }
 
-    // --- FUNÇÕES DE EXECUÇÃO DE TREINO ---
+    // --- CONFIGURAÇÃO DE NAVEGAÇÃO E MENU ---
+    function setupNavigation(userData) {
+        const menuBtn = document.getElementById("openMenuBtn");
+        const sidebar = document.getElementById("mobileSidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        const navLinks = document.querySelectorAll(".nav-link");
+        const sections = document.querySelectorAll(".view-section");
+
+        function toggleMenu() {
+            sidebar.classList.toggle("active");
+            overlay.classList.toggle("active");
+        }
+
+        if(menuBtn) menuBtn.addEventListener("click", toggleMenu);
+        if(overlay) overlay.addEventListener("click", toggleMenu);
+
+        navLinks.forEach(link => {
+            link.addEventListener("click", (e) => {
+                e.preventDefault();
+                if(link.classList.contains("locked")) return;
+
+                navLinks.forEach(l => l.classList.remove("active"));
+                link.classList.add("active");
+
+                const targetId = link.dataset.target;
+                sections.forEach(sec => sec.classList.add("hidden"));
+                document.getElementById(targetId).classList.remove("hidden");
+                toggleMenu();
+            });
+        });
+
+        document.getElementById("logoutBtnSide").addEventListener("click", () => {
+            localStorage.removeItem("fitUser");
+            window.location.href = "index.html";
+        });
+
+        // Configurar Anamnese
+        if (userData.anamnese) {
+            if(document.getElementById("anamneseGoal")) document.getElementById("anamneseGoal").value = userData.anamnese.goal || "saude";
+            if(document.getElementById("anamneseInjuries")) document.getElementById("anamneseInjuries").value = userData.anamnese.injuries || "";
+            if(document.getElementById("anamneseMeds")) document.getElementById("anamneseMeds").value = userData.anamnese.meds || "";
+        }
+
+        document.getElementById("saveAnamneseBtn").addEventListener("click", async () => {
+            const btn = document.getElementById("saveAnamneseBtn");
+            btn.innerText = "SALVANDO...";
+            try {
+                await update(ref(db, `users/${userId}/anamnese`), {
+                    goal: document.getElementById("anamneseGoal").value,
+                    injuries: document.getElementById("anamneseInjuries").value,
+                    meds: document.getElementById("anamneseMeds").value,
+                    updatedAt: new Date().toISOString()
+                });
+                alert("Salvo!");
+            } catch (e) { alert("Erro: " + e.message); }
+            finally { btn.innerText = "SALVAR DADOS"; }
+        });
+    }
+
+
+    // --- FUNÇÕES DE EXECUÇÃO DE TREINO (MODO FOCO) ---
     let activeWorkoutName = "";
     let startTime = null;
 
@@ -124,7 +148,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         activeWorkoutName = name;
         startTime = new Date();
         
-        // Troca visual para tela de treino
         document.getElementById("view-home").classList.add("hidden");
         document.getElementById("view-workout").classList.remove("hidden");
         document.getElementById("activeWorkoutTitle").innerText = name;
@@ -143,13 +166,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         const list = document.getElementById("workoutList");
         list.innerHTML = "";
         
-        workout.forEach((ex, idx) => {
+        // CORREÇÃO CRÍTICA: Garante array para o forEach
+        const safeWorkout = Array.isArray(workout) ? workout : Object.values(workout);
+
+        safeWorkout.forEach((ex, idx) => {
+            if (!ex) return; // Pula itens vazios se houver
+
             const card = document.createElement("div");
             card.style.cssText = "background:var(--surface-color); padding:1rem; border-radius:12px; margin-bottom:1rem; border:1px solid rgba(255,255,255,0.05);";
             
-            // Ícone
             let icon = '<i class="ph ph-barbell"></i>';
             if(ex.type === 'cardio') icon = '<i class="ph ph-sneaker-move"></i>';
+            if(ex.type === 'crossfit') icon = '<i class="ph ph-fire"></i>';
 
             card.innerHTML = `
                 <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
@@ -165,15 +193,17 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             const container = card.querySelector(`#sets-container-${idx}`);
             
+            // Renderização condicional baseada no tipo
             if(ex.type === 'cardio' || ex.type === 'crossfit') {
                  container.innerHTML = `
                     <div style="display:flex; gap:10px; align-items:center; background:rgba(0,0,0,0.3); padding:10px; border-radius:8px;">
-                        <input type="text" placeholder="Resultado" style="flex:1; background:#000; border:1px solid #333; color:white; padding:8px; border-radius:6px;">
+                        <input type="text" placeholder="Resultado (ex: 5km)" style="flex:1; background:#000; border:1px solid #333; color:white; padding:8px; border-radius:6px;">
                         <div class="check-box" onclick="window.toggleCheck(this)" style="width:40px; height:40px; background:#222; border:1px solid #444; border-radius:6px; display:flex; align-items:center; justify-content:center;">
                             <i class="ph ph-check" style="display:none; color:black;"></i>
                         </div>
                     </div>`;
             } else {
+                // Musculação
                 const sets = parseInt(ex.val1) || 3;
                 for(let i=1; i<=sets; i++) {
                     const row = document.createElement("div");
@@ -192,7 +222,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    // Função Global de Check (Necessária para o HTML injetado)
+    // --- FUNÇÕES GLOBAIS (Check, Timer, Feedback) ---
     window.toggleCheck = (el) => {
         const icon = el.querySelector("i");
         if(icon.style.display === "none") {
@@ -205,7 +235,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     };
 
-    // --- TIMER E FEEDBACK (Igual ao anterior) ---
     let timerInterval;
     const timerDiv = document.getElementById("restTimer");
     const timerDisplay = document.getElementById("timerDisplay");
@@ -218,13 +247,25 @@ document.addEventListener("DOMContentLoaded", async () => {
             rem--;
             const m = Math.floor(rem/60).toString().padStart(2,'0');
             const s = (rem%60).toString().padStart(2,'0');
-            timerDisplay.innerText = `${m}:${s}`;
+            if(timerDisplay) timerDisplay.innerText = `${m}:${s}`;
             if(rem <= 0) { clearInterval(timerInterval); timerDiv.classList.remove("active"); }
         }, 1000);
     }
     
-    window.addTime = (s) => { clearInterval(timerInterval); startRestTimer(parseInt(timerDisplay.innerText.split(':')[1])+s); };
-    document.getElementById("closeTimerBtn").addEventListener("click", () => { clearInterval(timerInterval); timerDiv.classList.remove("active"); });
+    window.addTime = (s) => { 
+        if(!timerDisplay) return;
+        const current = timerDisplay.innerText.split(':');
+        const totalSeconds = (parseInt(current[0])*60) + parseInt(current[1]);
+        clearInterval(timerInterval); 
+        startRestTimer(totalSeconds + s); 
+    };
+    
+    if(document.getElementById("closeTimerBtn")) {
+        document.getElementById("closeTimerBtn").addEventListener("click", () => { 
+            clearInterval(timerInterval); 
+            timerDiv.classList.remove("active"); 
+        });
+    }
 
     // Feedback
     document.getElementById("finishBtn").addEventListener("click", () => {
@@ -244,7 +285,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     document.getElementById("submitFeedbackBtn").addEventListener("click", async () => {
         if(selectedRpe === 0) return alert("Selecione a intensidade.");
-        
         try {
             await push(ref(db, `users/${userId}/history`), {
                 date: new Date().toISOString(),
@@ -253,7 +293,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 rpe: selectedRpe,
                 comment: document.getElementById("feedbackComment").value
             });
-            alert("Treino salvo! 💪");
+            alert("Treino Salvo! 💪");
             window.location.reload();
         } catch(e) { alert("Erro: " + e.message); }
     });
