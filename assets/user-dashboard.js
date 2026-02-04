@@ -314,4 +314,49 @@ document.addEventListener("DOMContentLoaded", async () => {
             window.location.reload();
         } catch(e) { alert("Erro: " + e.message); }
     });
+    // === 5. CARREGAR AVALIAÇÃO FÍSICA ===
+    async function loadAssessmentData() {
+        try {
+            const snapshot = await get(child(ref(db), `users/${userId}/assessments`));
+            
+            if (snapshot.exists()) {
+                const data = snapshot.val();
+                // Pega a última avaliação (a mais recente baseada na chave ou data)
+                const assessments = Object.values(data);
+                const latest = assessments[assessments.length - 1]; // Pega o último array
+
+                // Preenche Card Principal
+                if(latest.bio) {
+                    document.getElementById("userWeight").innerText = latest.bio.weight || "--";
+                    document.getElementById("userFat").innerText = latest.bio.fat || "--";
+                    document.getElementById("userBMI").innerText = latest.bio.bmi || "--";
+                    document.getElementById("userMuscle").innerText = latest.bio.muscle || "--";
+                } else if (latest.basic) {
+                    // Fallback para estrutura antiga se houver
+                    document.getElementById("userWeight").innerText = latest.basic.weight || "--";
+                    document.getElementById("userBMI").innerText = latest.basic.bmi || "--";
+                }
+
+                // Preenche Perímetros
+                if(latest.circ) {
+                    document.getElementById("res_shoulder").innerText = latest.circ.shoulder || "--";
+                    document.getElementById("res_waist").innerText = latest.circ.waist || "--";
+                    document.getElementById("res_arm").innerText = latest.circ.arm_r || "--";
+                    document.getElementById("res_thigh").innerText = latest.circ.thigh_r || "--";
+                }
+
+                // Data
+                const date = new Date(latest.date).toLocaleDateString('pt-BR');
+                document.getElementById("lastAvalDate").innerText = date;
+            } else {
+                // Se não tiver avaliação
+                document.getElementById("userWeight").innerText = "-";
+            }
+        } catch (error) {
+            console.error("Erro ao carregar avaliação:", error);
+        }
+    }
+
+    // CHAMA A FUNÇÃO AO INICIAR
+    loadAssessmentData();
 });
