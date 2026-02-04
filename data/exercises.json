@@ -679,4 +679,24 @@
     "img": "assets/img/prancha-corrida.gif",
     "instructions": "Em posição de flexão, alterne os joelhos no peito rapidamente."
   }
+  {
+    "id": "chest_bench_press_bar",
+    "name": "Supino Reto com Barra",
+    "muscleGroup": "Peitoral",
+    "target": "Geral",
+    "equipment": "Barra",
+    "mechanic": "Composto",
+    "img": "assets/img/supino-reto-barra.gif",
+    "instructions": "Deitado no banco, segure a barra com uma pegada um pouco maior que a largura dos ombros. Desça a barra controladamente até tocar o meio do peito e empurre para cima."
+  },
+  {
+    "id": "chest_decline_press_bar",
+    "name": "Supino Declinado com Barra",
+    "muscleGroup": "Peitoral",
+    "target": "Inferior",
+    "equipment": "Banco Declinado",
+    "mechanic": "Composto",
+    "img": "assets/img/supino-declinado-barra.jpg",
+    "instructions": "No banco declinado, desça a barra na linha inferior do peitoral (abaixo dos mamilos). Empurre para cima mantendo os cotovelos sob a barra."
+  }
 ]
