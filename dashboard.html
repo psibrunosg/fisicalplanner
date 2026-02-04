@@ -8,6 +8,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <style>
+        /* CSS EXTRA PARA SWITCH DE TEMA E MODAL (Caso não tenha atualizado o style.css) */
+        .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--primary-color); }
+        input:checked + .slider:before { transform: translateX(20px); }
+
+        /* Modal Styles Inline para garantir */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            z-index: 1000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: all 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-box {
+            background: var(--surface-color); padding: 2rem; border-radius: 16px;
+            width: 90%; max-width: 400px; border: 1px solid var(--primary-color);
+            transform: translateY(20px); transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .modal-overlay.active .modal-box { transform: translateY(0); }
+    </style>
 </head>
 <body>
 
@@ -36,10 +62,10 @@
             <header class="top-bar">
                 <div class="welcome-text">
                     <h1>Painel de Controle</h1>
-                    <p>Bem-vindo de volta, <span id="adminName">Admin</span>.</p>
+                    <p>Bem-vindo, <span id="adminName">Admin</span>.</p>
                 </div>
                 <div class="user-profile">
-                    <img src="https://ui-avatars.com/api/?name=Admin+Fit&background=00ff88&color=000" alt="Admin" class="avatar">
+                    <img src="https://ui-avatars.com/api/?name=Admin" class="avatar" id="topAvatar">
                 </div>
             </header>
 
@@ -71,7 +97,9 @@
                 <section class="recent-users">
                     <div class="section-header">
                         <h2>Base de Alunos</h2>
-                        <button class="btn-sm" style="opacity: 0.5; cursor: not-allowed;">Novo Aluno</button>
+                        <button id="openNewStudentBtn" class="btn-sm" style="background: var(--primary-color); color: black; font-weight:bold;">
+                            <i class="ph ph-plus"></i> Novo Aluno
+                        </button>
                     </div>
                     
                     <div class="table-container">
@@ -241,16 +269,64 @@
                     <h3>Histórico do Aluno</h3>
                     <div class="table-container">
                         <table>
-                            <thead>
-                                <tr><th>Data</th><th>Peso</th><th>% Gordura</th><th>Ações</th></tr>
-                            </thead>
+                            <thead><tr><th>Data</th><th>Peso</th><th>% Gordura</th><th>Ações</th></tr></thead>
                             <tbody id="assessmentHistoryBody"></tbody>
                         </table>
                     </div>
                 </div>
             </section>
 
+            <section id="settings-section" class="view-section hidden">
+                <div class="section-header"><h2>Configurações do Sistema</h2></div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    
+                    <div class="workout-builder" style="background: var(--surface-color); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                        <h3 style="margin-bottom: 1rem; color: var(--primary-color);">Perfil do Admin</h3>
+                        <div class="form-group"><label>Nome de Exibição</label><input type="text" id="conf_adminName" class="form-input"></div>
+                        <div class="form-group"><label>Foto (URL)</label><input type="text" id="conf_adminAvatar" class="form-input" placeholder="http://..."></div>
+                        <div class="form-group"><label>WhatsApp (Suporte)</label><input type="text" id="conf_adminPhone" class="form-input" placeholder="5511999999999"></div>
+                        <button id="saveProfileBtn" class="btn-sm" style="margin-top: 10px; width: 100%; background: var(--primary-color); color:black;">Salvar Perfil</button>
+                    </div>
+
+                    <div class="workout-builder" style="background: var(--surface-color); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                        <h3 style="margin-bottom: 1rem; color: var(--primary-color);">Aparência e Sistema</h3>
+                        
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px;">
+                            <div>
+                                <strong style="display:block; color:white;">Modo Claro</strong>
+                                <span style="font-size: 0.8rem; color: #888;">Alternar entre tema escuro/claro</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="themeSwitch">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tempo de Descanso Padrão (seg)</label>
+                            <input type="number" id="conf_defaultRest" class="form-input" value="60">
+                        </div>
+                        <button id="saveSystemBtn" class="btn-sm" style="margin-top: 10px; width: 100%; background: #333; color:white;">Salvar Preferências</button>
+                    </div>
+                </div>
+            </section>
+
         </main>
+    </div>
+
+    <div id="newStudentModal" class="modal-overlay">
+        <div class="modal-box">
+            <h2 style="color: var(--primary-color); margin-bottom: 1.5rem;">Cadastrar Aluno</h2>
+            <div class="form-group"><label>Nome Completo</label><input type="text" id="new_name" class="form-input"></div>
+            <div class="form-group"><label>E-mail (Login)</label><input type="email" id="new_email" class="form-input"></div>
+            <div class="form-group"><label>Senha Provisória</label><input type="text" id="new_password" class="form-input" value="123456"></div>
+            
+            <div style="display: flex; gap: 10px; margin-top: 1.5rem;">
+                <button id="closeModalBtn" class="btn-sm" style="background: #333; color: white; flex: 1;">Cancelar</button>
+                <button id="createNewUserBtn" class="btn-sm" style="background: var(--primary-color); color: black; flex: 1;">Criar Aluno</button>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="assets/dashboard.js"></script>
