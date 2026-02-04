@@ -106,8 +106,8 @@
             <a href="#" class="nav-link" data-target="view-anamnese">
                 <i class="ph ph-clipboard-text"></i> Anamnese
             </a>
-            <a href="#" class="nav-link locked">
-                <i class="ph ph-ruler"></i> Avaliação Física <span class="badge-lock"><i class="ph ph-lock"></i></span>
+           <a href="#" class="nav-link" data-target="view-assessment">
+                <i class="ph ph-ruler"></i> Minha Avaliação
             </a>
             <a href="#" class="nav-link locked">
                 <i class="ph ph-gear"></i> Configurações <span class="badge-lock"><i class="ph ph-lock"></i></span>
@@ -241,7 +241,49 @@
             <button id="saveAnamneseBtn" class="btn-login" style="margin-top: 1rem;">SALVAR FICHA COMPLETA</button>
         </div>
     </div>
+    <div id="view-assessment" class="view-section hidden" style="padding: 1.5rem; padding-bottom: 80px;">
+        <h2 style="margin-bottom: 1rem;">Meus Resultados</h2>
+        
+        <div style="background: linear-gradient(135deg, var(--primary-color), #004d29); padding: 20px; border-radius: 16px; color: black; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,255,136,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                <div>
+                    <span style="font-size: 0.9rem; font-weight: 600; opacity: 0.8;">PESO ATUAL</span>
+                    <div style="font-size: 2.5rem; font-weight: bold; line-height: 1;"><span id="userWeight">--</span><span style="font-size: 1rem;">kg</span></div>
+                </div>
+                <div style="text-align: right;">
+                    <span style="font-size: 0.9rem; font-weight: 600; opacity: 0.8;">GORDURA</span>
+                    <div style="font-size: 1.5rem; font-weight: bold;"><span id="userFat">--</span>%</div>
+                </div>
+            </div>
+            <div style="margin-top: 15px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.1); font-size: 0.85rem; font-weight: 500;">
+                IMC: <span id="userBMI">--</span> • Massa Muscular: <span id="userMuscle">--</span>kg
+            </div>
+        </div>
 
+        <h3 style="font-size: 1.1rem; color: #ccc; margin-bottom: 10px;">Perímetros (cm)</h3>
+        <div class="workout-grid" style="padding: 0; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div style="background: var(--surface-color); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="color: #777; font-size: 0.8rem;">Ombros</div>
+                <div style="font-size: 1.2rem; font-weight: bold;" id="res_shoulder">--</div>
+            </div>
+            <div style="background: var(--surface-color); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="color: #777; font-size: 0.8rem;">Cintura</div>
+                <div style="font-size: 1.2rem; font-weight: bold;" id="res_waist">--</div>
+            </div>
+            <div style="background: var(--surface-color); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="color: #777; font-size: 0.8rem;">Braço Dir.</div>
+                <div style="font-size: 1.2rem; font-weight: bold;" id="res_arm">--</div>
+            </div>
+            <div style="background: var(--surface-color); padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+                <div style="color: #777; font-size: 0.8rem;">Coxa Dir.</div>
+                <div style="font-size: 1.2rem; font-weight: bold;" id="res_thigh">--</div>
+            </div>
+        </div>
+
+        <div style="margin-top: 2rem; text-align: center;">
+            <p style="color: #666; font-size: 0.8rem;">Última atualização: <span id="lastAvalDate">--/--/----</span></p>
+        </div>
+    </div>
     <div id="view-feedback" class="feedback-overlay hidden">
         <div class="feedback-card">
             <h2>Treino Concluído! 🔥</h2>
