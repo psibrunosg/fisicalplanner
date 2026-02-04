@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitLife - Cadastro de Treinador</title>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --primary-color: #00ff88; --bg-color: #121214; --surface-color: #202024; }
+        body { margin: 0; font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: white; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        
+        .signup-container { width: 100%; max-width: 400px; padding: 2rem; background: var(--surface-color); border-radius: 16px; border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
+        .logo { text-align: center; margin-bottom: 2rem; }
+        .logo h2 { font-size: 1.8rem; margin: 0; color: white; }
+        .logo span { color: var(--primary-color); }
+        .logo p { color: #888; font-size: 0.9rem; margin-top: 5px; }
+
+        .form-group { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #ccc; }
+        input { width: 100%; padding: 12px; background: #121214; border: 1px solid #333; border-radius: 8px; color: white; outline: none; box-sizing: border-box; }
+        input:focus { border-color: var(--primary-color); }
+
+        .btn-primary { width: 100%; padding: 14px; background: var(--primary-color); border: none; border-radius: 8px; color: black; font-weight: 800; cursor: pointer; font-size: 1rem; margin-top: 1rem; transition: 0.3s; }
+        .btn-primary:hover { filter: brightness(0.8); }
+        
+        .back-link { display: block; text-align: center; margin-top: 1.5rem; color: #666; text-decoration: none; font-size: 0.9rem; }
+        .back-link:hover { color: white; }
+
+        /* Destaque para a chave de segurança */
+        .security-field input { border-color: #ff4444; }
+        .security-field input:focus { border-color: #ff6666; box-shadow: 0 0 10px rgba(255, 68, 68, 0.2); }
+    </style>
+</head>
+<body>
+
+    <div class="signup-container">
+        <div class="logo">
+            <h2>Fit<span>Coach</span></h2>
+            <p>Acesso exclusivo para Treinadores</p>
+        </div>
+
+        <form id="trainerSignupForm">
+            <div class="form-group">
+                <label>Nome Completo</label>
+                <input type="text" id="t_name" placeholder="Ex: Treinador Bruno" required>
+            </div>
+
+            <div class="form-group">
+                <label>E-mail Profissional</label>
+                <input type="email" id="t_email" placeholder="email@treinador.com" required>
+            </div>
+
+            <div class="form-group">
+                <label>Senha</label>
+                <input type="password" id="t_password" placeholder="******" required>
+            </div>
+
+            <div class="form-group security-field">
+                <label style="color:#ff6666;"><i class="ph ph-lock-key"></i> Chave Mestra (Segurança)</label>
+                <input type="password" id="t_secret" placeholder="Código de autorização" required>
+            </div>
+
+            <button type="submit" class="btn-primary" id="signupBtn">CADASTRAR ACESSO</button>
+        </form>
+
+        <a href="index.html" class="back-link">Voltar para Login</a>
+    </div>
+
+    <script type="module" src="assets/signup-trainer.js"></script>
+
+</body>
+</html>
