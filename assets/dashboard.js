@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
             // Se não tem, baixa do JSON original e salva no Local
             try {
-                const res = await fetch('user/users.json');
+                const res = await fetch('https://psibrunosg.github.io/fisicalplanner/user/users.json');
                 dbUsers = await res.json();
                 localStorage.setItem("db_users", JSON.stringify(dbUsers)); // Salva inicial
             } catch (e) { console.error("Erro users:", e); }
@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             dbExercises = JSON.parse(localExercises);
         } else {
             try {
-                const res = await fetch('data/exercises.json');
+                const res = await fetch('https://psibrunosg.github.io/fisicalplanner/data/exercises.json');
                 dbExercises = await res.json();
                 localStorage.setItem("db_exercises", JSON.stringify(dbExercises));
             } catch (e) { console.error("Erro exercises:", e); }
