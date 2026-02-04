@@ -368,6 +368,23 @@ document.addEventListener("DOMContentLoaded", async () => {
                 type: type, displayString: displayString, val1: meta1, val2: meta2
             });
             renderWorkoutPreview();
+            currentWorkoutBuild.push({
+                id: fullExercise.id, 
+                exercise: fullExercise.name, 
+                target: fullExercise.target || 'Geral',
+                
+                // === NOVIDADE: SALVANDO A IMAGEM E A INSTRUÇÃO ===
+                img: fullExercise.img || "", // Salva o caminho do GIF
+                instructions: fullExercise.instructions || "Siga a orientação do treinador.",
+                // ==================================================
+
+                type: type, 
+                displayString: displayString, 
+                val1: meta1, 
+                val2: meta2
+            });
+
+            renderWorkoutPreview();
         });
     }
 
