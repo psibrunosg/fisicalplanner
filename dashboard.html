@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FitLife | Admin Dashboard</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/style.css">
+    
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 </head>
 <body>
@@ -24,7 +26,9 @@
             </nav>
 
             <div class="sidebar-footer">
-                <button id="logoutBtn" class="btn-logout"><i class="ph ph-sign-out"></i> Sair</button>
+                <button id="logoutBtn" class="btn-logout">
+                    <i class="ph ph-sign-out"></i> Sair
+                </button>
             </div>
         </aside>
 
@@ -66,7 +70,7 @@
             <section class="recent-users">
                 <div class="section-header">
                     <h2>Base de Alunos</h2>
-                    <button class="btn-sm">Novo Aluno</button>
+                    <button class="btn-sm" style="opacity: 0.5; cursor: not-allowed;">Novo Aluno</button>
                 </div>
                 
                 <div class="table-container">
@@ -75,16 +79,15 @@
                             <tr>
                                 <th>Nome</th>
                                 <th>Email</th>
-                                <th>Treino Atual</th>
-                                <th>Status</th>
-                                <th>Ações</th>
+                                <th>Status do Treino</th>
+                                <th>Conta</th>
                             </tr>
                         </thead>
                         <tbody id="userTableBody">
                             </tbody>
                     </table>
                 </div>
-                </section>
+            </section>
 
             <section id="workout-section" class="recent-users" style="margin-top: 2rem;">
                 <div class="section-header">
@@ -98,6 +101,11 @@
                         <select id="studentSelect" class="form-input" style="background: #0a0a0a; color: white;">
                             <option value="">Carregando alunos...</option>
                         </select>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label style="color: var(--primary-color);">2. Nome do Treino (Divisão)</label>
+                        <input type="text" id="workoutNameInput" class="form-input" placeholder="Ex: Treino A - Peito e Tríceps" style="background: #0a0a0a; color: white;">
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
@@ -120,6 +128,7 @@
                             </select>
                         </div>
                     </div>
+
                     <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; align-items: end;">
                         <div class="form-group">
                             <label>Séries</label>
@@ -127,7 +136,7 @@
                         </div>
                         <div class="form-group">
                             <label>Repetições</label>
-                            <input type="text" id="reps" class="form-input" placeholder="Ex: 12 ou Falha" value="12">
+                            <input type="text" id="reps" class="form-input" placeholder="Ex: 12" value="12">
                         </div>
                         <button id="addExerciseBtn" class="btn-sm" style="height: 48px; width: 48px; display: flex; align-items: center; justify-content: center;">
                             <i class="ph ph-plus" style="font-size: 1.2rem;"></i>
@@ -135,21 +144,20 @@
                     </div>
 
                     <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
-                        <h3 style="font-size: 1rem; margin-bottom: 1rem;">Treino sendo montado:</h3>
+                        <h3 style="font-size: 1rem; margin-bottom: 1rem;">Prévia: <span id="previewTitle" style="color:var(--primary-color)">...</span></h3>
                         <ul id="workoutPreview" style="list-style: none; margin-bottom: 1.5rem;">
                             <li style="color: var(--text-muted); font-style: italic;">Nenhum exercício adicionado ainda.</li>
                         </ul>
                         
                         <button id="saveWorkoutBtn" class="btn-login" style="background-color: var(--primary-color); color: black;">
-                            SALVAR TREINO NO PERFIL DO ALUNO
+                            ENVIAR TREINO PARA O ALUNO
                         </button>
                     </div>
                 </div>
             </section>
-            </section>
         </main>
     </div>
 
-   <script type="module" src="assets/dashboard.js"></script>
+    <script type="module" src="assets/dashboard.js"></script>
 </body>
 </html>
