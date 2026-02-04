@@ -93,67 +93,50 @@
                 <div class="section-header">
                     <h2>Criador de Treinos</h2>
                 </div>
-
-                <div class="workout-builder" style="background: var(--surface-color); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-                    
-                    <div class="form-group">
-                        <label style="color: var(--primary-color);">1. Selecione o Aluno</label>
-                        <select id="studentSelect" class="form-input" style="background: #0a0a0a; color: white;">
-                            <option value="">Carregando alunos...</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group" style="margin-top: 1rem;">
-                        <label style="color: var(--primary-color);">2. Nome do Treino (Divisão)</label>
-                        <input type="text" id="workoutNameInput" class="form-input" placeholder="Ex: Treino A - Peito e Tríceps" style="background: #0a0a0a; color: white;">
-                    </div>
-
+                    <input type="text" id="workoutNameInput" class="form-input" placeholder="Ex: Treino A - Peito e Tríceps" style="background: #0a0a0a; color: white;">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-                        <div class="form-group">
-                            <label>Filtro Muscular</label>
-                            <select id="muscleFilter" class="form-input" style="background: #0a0a0a; color: white;">
-                                <option value="all">Todos</option>
-                                <option value="Peitoral">Peitoral</option>
-                                <option value="Costas">Costas</option>
-                                <option value="Pernas">Pernas</option>
-                                <option value="Ombros">Ombros</option>
-                                <option value="Bíceps">Bíceps</option>
-                                <option value="Tríceps">Tríceps</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Exercício</label>
-                            <select id="exerciseSelect" class="form-input" style="background: #0a0a0a; color: white;">
-                                <option value="">Selecione...</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 1rem; align-items: end;">
-                        <div class="form-group">
-                            <label>Séries</label>
-                            <input type="number" id="sets" class="form-input" placeholder="Ex: 4" value="3">
-                        </div>
-                        <div class="form-group">
-                            <label>Repetições</label>
-                            <input type="text" id="reps" class="form-input" placeholder="Ex: 12" value="12">
-                        </div>
-                        <button id="addExerciseBtn" class="btn-sm" style="height: 48px; width: 48px; display: flex; align-items: center; justify-content: center;">
-                            <i class="ph ph-plus" style="font-size: 1.2rem;"></i>
-                        </button>
-                    </div>
-
-                    <div style="margin-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
-                        <h3 style="font-size: 1rem; margin-bottom: 1rem;">Prévia: <span id="previewTitle" style="color:var(--primary-color)">...</span></h3>
-                        <ul id="workoutPreview" style="list-style: none; margin-bottom: 1.5rem;">
-                            <li style="color: var(--text-muted); font-style: italic;">Nenhum exercício adicionado ainda.</li>
-                        </ul>
+                        <div id="input-container" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px; margin-bottom: 1rem;">
                         
-                        <button id="saveWorkoutBtn" class="btn-login" style="background-color: var(--primary-color); color: black;">
-                            ENVIAR TREINO PARA O ALUNO
+                        <div id="strength-inputs" class="input-group-dynamic">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Séries</label>
+                                    <input type="number" id="sets" class="form-input" placeholder="Ex: 4" value="3">
+                                </div>
+                                <div class="form-group">
+                                    <label>Repetições</label>
+                                    <input type="text" id="reps" class="form-input" placeholder="Ex: 12" value="12">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="cardio-inputs" class="input-group-dynamic" style="display: none;">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div class="form-group">
+                                    <label>Distância (km)</label>
+                                    <input type="number" id="distance" class="form-input" placeholder="Ex: 5">
+                                </div>
+                                <div class="form-group">
+                                    <label>Tempo Alvo (min)</label>
+                                    <input type="text" id="duration" class="form-input" placeholder="Ex: 30:00">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="crossfit-inputs" class="input-group-dynamic" style="display: none;">
+                            <div class="form-group">
+                                <label>Instruções do WOD / Detalhes</label>
+                                <textarea id="wod-details" class="form-input" rows="2" placeholder="Ex: AMRAP 15min: 5 Pullups, 10 Pushups, 15 Squats"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div style="text-align: right;">
+                        <button id="addExerciseBtn" class="btn-sm" style="display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px;">
+                            <i class="ph ph-plus-circle" style="font-size: 1.2rem;"></i> ADICIONAR AO TREINO
                         </button>
                     </div>
-                </div>
             </section>
         </main>
     </div>
