@@ -1,73 +1,87 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const loginForm = document.querySelector("form");
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-    
-    // Cria um elemento para mensagens de erro/sucesso dinamicamente
-    const messageBox = document.createElement("div");
-    messageBox.style.marginTop = "15px";
-    messageBox.style.textAlign = "center";
-    messageBox.style.fontSize = "0.9rem";
-    messageBox.style.fontWeight = "bold";
-    loginForm.appendChild(messageBox);
+    const loginForm = document.getElementById("loginForm");
+    const messageBox = document.getElementById("messageBox");
+    const btnLogin = document.querySelector(".btn-login");
 
-    loginForm.addEventListener("submit", async (e) => {
-        e.preventDefault(); // Impede a página de recarregar
+    // Estilizando a caixa de mensagem via JS para não poluir o CSS inicial
+    if (messageBox) {
+        messageBox.style.marginTop = "15px";
+        messageBox.style.textAlign = "center";
+        messageBox.style.fontSize = "0.9rem";
+        messageBox.style.fontWeight = "600";
+        messageBox.style.minHeight = "20px";
+    }
 
-        const email = emailInput.value;
-        const password = passwordInput.value;
+    if(loginForm) {
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
 
-        // Feedback visual de carregamento
-        const btnLogin = document.querySelector(".btn-login");
-        const originalBtnText = btnLogin.innerText;
-        btnLogin.innerText = "Verificando...";
-        btnLogin.disabled = true;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
-        try {
-            // 1. Busca a lista de usuários
-            const response = await fetch('https://psibrunosg.github.io/fisicalplanner/user/users.json');
-            const users = await response.json();
+            // UI: Estado de carregamento
+            const originalText = btnLogin.innerText;
+            btnLogin.innerText = "VALIDANDO...";
+            btnLogin.style.opacity = "0.7";
+            btnLogin.disabled = true;
+            if(messageBox) messageBox.innerText = "";
 
-            // 2. Verifica se existe alguém com esse email e senha
-            const user = users.find(u => u.email === email && u.password === password);
-
-            if (user) {
-                // SUCESSO!
-                messageBox.style.color = "#00ff88"; // Verde Neon
-                messageBox.innerText = `Bem-vindo, ${user.name}! Redirecionando...`;
+            try {
+                // Tenta carregar o JSON. 
+                // O caminho 'user/users.json' é relativo ao index.html (raiz)
+                const response = await fetch('user/users.json');
                 
-                // 3. Salva a sessão no navegador para a próxima página usar
-                // Removemos a senha antes de salvar por boas práticas (mesmo sendo protótipo)
-                delete user.password; 
-                localStorage.setItem("fitUser", JSON.stringify(user));
-
-                // Aguarda 1.5s para o usuário ver a mensagem e redireciona
-                // Dentro do if (user) { ... }
-                
-                setTimeout(() => {
-                    // VERIFICA SE É ADMIN
-                    // VERIFICA O TIPO DE USUÁRIO
-                if (user.workoutType === "admin_dashboard") {
-                    window.location.href = "dashboard.html"; // Vai para o Painel Admin
-                } else {
-                    window.location.href = "user-dashboard.html"; // Vai para o App do Aluno
+                if (!response.ok) {
+                    throw new Error("Erro ao conectar com o banco de dados (404). Verifique se a pasta 'user' e o arquivo 'users.json' existem.");
                 }
-                }, 1500);
 
-            } else {
-                // ERRO
-                messageBox.style.color = "#ff4d4d"; // Vermelho
-                messageBox.innerText = "E-mail ou senha incorretos.";
-                btnLogin.innerText = originalBtnText;
+                const users = await response.json();
+
+                // Lógica de validação: Procura usuário com email e senha iguais
+                const user = users.find(u => u.email === email && u.password === password);
+
+                if (user) {
+                    // SUCESSO
+                    if(messageBox) {
+                        messageBox.style.color = "#00ff88"; // Verde Neon
+                        messageBox.innerText = "Acesso permitido! Redirecionando...";
+                    }
+                    
+                    // Salvar sessão (removemos a senha por segurança básica)
+                    const sessionUser = { ...user };
+                    delete sessionUser.password;
+                    localStorage.setItem("fitUser", JSON.stringify(sessionUser));
+
+                    // Redirecionamento Inteligente
+                    setTimeout(() => {
+                        // Se for ADMIN, vai para o dashboard de controle
+                        if (user.workoutType === "admin_dashboard") {
+                            window.location.href = "dashboard.html";
+                        } 
+                        // Se for qualquer outra pessoa (ALUNO), vai para o app de treino
+                        else {
+                            window.location.href = "user-dashboard.html";
+                        }
+                    }, 1500);
+
+                } else {
+                    // FALHA (Senha errada)
+                    throw new Error("E-mail ou senha incorretos.");
+                }
+
+            } catch (error) {
+                // Tratamento de Erros (Arquivo não achado ou senha errada)
+                console.error(error);
+                if(messageBox) {
+                    messageBox.style.color = "#ff4d4d"; // Vermelho
+                    messageBox.innerText = error.message;
+                }
+                
+                // Resetar botão para tentar de novo
+                btnLogin.innerText = originalText;
+                btnLogin.style.opacity = "1";
                 btnLogin.disabled = false;
             }
-
-        } catch (error) {
-            console.error("Erro ao carregar banco de dados:", error);
-            messageBox.style.color = "#ff4d4d";
-            messageBox.innerText = "Erro no sistema. Tente novamente.";
-            btnLogin.innerText = originalBtnText;
-            btnLogin.disabled = false;
-        }
-    });
+        });
+    }
 });
