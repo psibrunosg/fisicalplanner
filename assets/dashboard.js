@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // === CONFIGURAÇÃO: ID DO TREINADOR PRINCIPAL (TREINADOR A) ===
     // IMPORTANTE: Substitua pelo ID do admin principal (ex: 'admin-at-fitlife-com')
     // Isso garante que o Treinador A veja os alunos que se cadastraram sozinhos no site.
-    const MASTER_TRAINER_ID = "admin-at-fitlife-com"; 
+    const MASTER_TRAINER_ID = "brunosg2711@gmail.com"; 
 
     // 1. SEGURANÇA
     const sessionUser = JSON.parse(localStorage.getItem("fitUser"));
