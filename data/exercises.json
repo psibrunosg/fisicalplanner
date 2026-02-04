@@ -647,4 +647,45 @@
     "equipment": "Máquina",
     "mechanic": "Cardio"
   }
+  ,
+  {
+    "id": "run_01",
+    "name": "Corrida de Rua",
+    "muscleGroup": "Cardio",
+    "target": "Resistência",
+    "equipment": "Rua/Esteira",
+    "type": "cardio" 
+  },
+  {
+    "id": "run_02",
+    "name": "Tiros de Velocidade (Sprints)",
+    "muscleGroup": "Cardio",
+    "target": "Explosão",
+    "equipment": "Pista",
+    "type": "cardio"
+  },
+  {
+    "id": "cross_01",
+    "name": "WOD - Murph",
+    "muscleGroup": "Full Body",
+    "target": "Condicionamento",
+    "equipment": "Peso do Corpo",
+    "type": "crossfit"
+  },
+  {
+    "id": "cross_02",
+    "name": "Burpees",
+    "muscleGroup": "Full Body",
+    "target": "Cardio",
+    "equipment": "Peso do Corpo",
+    "type": "crossfit"
+  },
+  {
+    "id": "calis_01",
+    "name": "Muscle-up",
+    "muscleGroup": "Costas/Ombros",
+    "target": "Força",
+    "equipment": "Barra",
+    "type": "strength"
+  }
 ]
