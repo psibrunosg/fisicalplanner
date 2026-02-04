@@ -17,7 +17,7 @@
     "equipment": "Banco Declinado",
     "mechanic": "Isolado",
     "img": "assets/img/abdominal-inclinado.gif",
-    "instructions": "Prenda os pés no apoio e deite-se no banco. Com os braços cruzados no peito ou mãos nas têmporas, suba o tronco flexionando a coluna e contraindo o abdômen. Mantenha o queixo longe do peito e controle a descida."
+    "instructions": "Prenda os pés no apoio e deite-se no banco. Com os braços cruzados no peito, suba o tronco flexionando a coluna e contraindo o abdômen. Mantenha o queixo longe do peito."
   },
   {
     "id": "abs_plank",
@@ -27,7 +27,7 @@
     "equipment": "Solo",
     "mechanic": "Isométrico",
     "img": "assets/img/prancha-alongamento.gif",
-    "instructions": "Apoie os antebraços e a ponta dos pés no chão. Mantenha o corpo em linha reta, contraindo glúteos e abdômen para estabilizar a coluna. Segure a posição sem deixar o quadril cair ou subir demais."
+    "instructions": "Apoie os antebraços e a ponta dos pés no chão. Mantenha o corpo em linha reta, contraindo glúteos e abdômen para estabilizar a coluna. Segure a posição."
   },
   {
     "id": "leg_abd",
@@ -37,37 +37,37 @@
     "equipment": "Máquina",
     "mechanic": "Isolado",
     "img": "assets/img/abdutora.gif",
-    "instructions": "Sente-se na máquina com as pernas nos apoios internos. Afaste as pernas empurrando os apoios para fora com a força dos glúteos. Retorne à posição inicial controlando o movimento, sem deixar os pesos baterem."
+    "instructions": "Sente-se na máquina com as pernas nos apoios internos. Afaste as pernas empurrando os apoios para fora com a força dos glúteos. Retorne controlando o movimento."
   },
   {
     "id": "leg_lunge_db",
     "name": "Afundo com Halteres",
     "muscleGroup": "Pernas",
-    "target": "Geral (Quadríceps/Glúteo)",
+    "target": "Geral",
     "equipment": "Halteres",
     "mechanic": "Composto",
     "img": "assets/img/afundo-alter.gif",
-    "instructions": "Em pé, segurando halteres ao lado do corpo, dê um passo à frente. Desça o quadril flexionando ambos os joelhos a 90 graus, mantendo o tronco ereto. Empurre o chão com o pé da frente para retornar à posição inicial."
+    "instructions": "Em pé, segurando halteres, dê um passo à frente. Desça o quadril flexionando ambos os joelhos a 90 graus. Empurre o chão com o pé da frente para retornar."
   },
   {
     "id": "leg_lunge_land",
     "name": "Afundo Cavalinho (Landmine)",
     "muscleGroup": "Pernas",
-    "target": "Geral (Quadríceps/Glúteo)",
-    "equipment": "Barra (Landmine)",
+    "target": "Geral",
+    "equipment": "Barra",
     "mechanic": "Composto",
     "img": "assets/img/afundo-cavalinho.gif",
-    "instructions": "Segure a ponta da barra na altura do peito com ambas as mãos. Realize o afundo reverso (dando um passo para trás) e flexionando os joelhos. Mantenha o tronco levemente inclinado à frente para maior estabilidade."
+    "instructions": "Segure a ponta da barra na altura do peito. Realize o afundo reverso (passo para trás) flexionando os joelhos. Mantenha o tronco levemente inclinado à frente."
   },
   {
     "id": "leg_lunge_smith",
     "name": "Afundo no Smith",
     "muscleGroup": "Pernas",
-    "target": "Geral (Quadríceps/Glúteo)",
-    "equipment": "Smith Machine",
+    "target": "Geral",
+    "equipment": "Smith",
     "mechanic": "Composto",
     "img": "assets/img/afundo-smith.gif",
-    "instructions": "Posicione a barra sobre os trapézios. Dê um passo à frente (posição de afundo estático). Desça verticalmente até o joelho de trás quase tocar o chão. Empurre para subir concentrando a força na perna da frente."
+    "instructions": "Posicione a barra sobre os trapézios. Dê um passo à frente. Desça verticalmente até o joelho de trás quase tocar o chão. Suba concentrando a força na perna da frente."
   },
   {
     "id": "leg_squat_db",
@@ -77,7 +77,7 @@
     "equipment": "Halteres",
     "mechanic": "Composto",
     "img": "assets/img/agachamento-alter.gif",
-    "instructions": "Segure um halter em cada mão ao lado do corpo. Mantenha os pés na largura dos ombros. Agache flexionando joelhos e quadril, mantendo a coluna reta, até as coxas ficarem paralelas ao chão. Suba estendendo as pernas."
+    "instructions": "Segure os halteres ao lado do corpo. Agache flexionando joelhos e quadril, mantendo a coluna reta, até as coxas ficarem paralelas ao chão."
   },
   {
     "id": "leg_squat_hack",
@@ -87,27 +87,27 @@
     "equipment": "Máquina",
     "mechanic": "Composto",
     "img": "assets/img/agachamento-maquina.gif",
-    "instructions": "Apoie as costas e ombros nas almofadas da máquina. Posicione os pés na plataforma. Destrave e agache até atingir 90 graus nos joelhos. Empurre a plataforma com os calcanhares para subir, sem estender totalmente os joelhos."
+    "instructions": "Apoie as costas no encosto. Destrave e agache até atingir 90 graus. Empurre a plataforma com os calcanhares para subir, sem travar os joelhos."
   },
   {
     "id": "leg_squat_sumo",
     "name": "Agachamento Sumô (Halter)",
     "muscleGroup": "Pernas",
-    "target": "Adutores/Glúteo",
+    "target": "Adutores",
     "equipment": "Halteres",
     "mechanic": "Composto",
     "img": "assets/img/Agachamento-sumo.gif",
-    "instructions": "Afaste os pés além da largura dos ombros, com as pontas viradas para fora (45 graus). Segure o halter no centro com as duas mãos. Agache mantendo os joelhos na direção da ponta dos pés e o tronco ereto."
+    "instructions": "Pés afastados além dos ombros, pontas para fora. Segure o halter no centro. Agache mantendo os joelhos na direção da ponta dos pés."
   },
   {
     "id": "leg_hack_180",
-    "name": "Leg Press 180 (Hack Horizontal)",
+    "name": "Leg Press 180 (Horizontal)",
     "muscleGroup": "Pernas",
     "target": "Quadríceps",
     "equipment": "Máquina",
     "mechanic": "Composto",
     "img": "assets/img/Hack 180.gif",
-    "instructions": "Sente-se na máquina e apoie os pés na plataforma. Empurre a plataforma estendendo os joelhos, mas sem travá-los no final. Flexione os joelhos para retornar à posição inicial, controlando o peso."
+    "instructions": "Sente-se e apoie os pés na plataforma. Empurre estendendo os joelhos (sem travar) e retorne controlando o peso até 90 graus."
   },
   {
     "id": "leg_press_45",
@@ -117,7 +117,7 @@
     "equipment": "Máquina",
     "mechanic": "Composto",
     "img": "assets/img/legpress-45.gif",
-    "instructions": "Sente-se no aparelho e apoie os pés na plataforma na largura dos ombros. Destrave a máquina. Desça a plataforma controlando o peso até os joelhos formarem 90 graus. Empurre com os calcanhares para subir."
+    "instructions": "Pés na largura dos ombros na plataforma. Desça o peso controlando até os joelhos formarem 90 graus. Empurre com os calcanhares."
   },
   {
     "id": "leg_ext",
@@ -127,147 +127,147 @@
     "equipment": "Máquina",
     "mechanic": "Isolado",
     "img": "assets/img/cadeira-extensora.gif",
-    "instructions": "Ajuste o encosto e o rolo (acima do tornozelo). Estenda os joelhos completamente, contraindo o quadríceps. Segure por 1 segundo no topo e retorne controlando a descida."
+    "instructions": "Ajuste o rolo acima do tornozelo. Estenda os joelhos completamente, contraindo o quadríceps. Segure 1 segundo no topo e desça devagar."
   },
   {
     "id": "leg_curl_seat",
     "name": "Cadeira Flexora",
     "muscleGroup": "Pernas",
-    "target": "Posterior de Coxa",
+    "target": "Posterior",
     "equipment": "Máquina",
     "mechanic": "Isolado",
     "img": "assets/img/cadeira-flexora.gif",
-    "instructions": "Sente-se e ajuste o apoio sobre as coxas. Empurre o rolo para baixo flexionando os joelhos e contraindo a parte posterior da coxa. Retorne controlando o movimento."
+    "instructions": "Sentado, empurre o rolo para baixo flexionando os joelhos e contraindo a parte posterior da coxa. Suba controlando o movimento."
   },
   {
     "id": "leg_curl_lying",
     "name": "Mesa Flexora",
     "muscleGroup": "Pernas",
-    "target": "Posterior de Coxa",
+    "target": "Posterior",
     "equipment": "Máquina",
     "mechanic": "Isolado",
     "img": "assets/img/mesa-flexora.gif",
-    "instructions": "Deite-se de bruços na máquina, com os joelhos fora do banco e o rolo apoiado no calcanhar. Flexione os joelhos trazendo o rolo em direção ao glúteo. Não levante o quadril do banco durante a execução."
+    "instructions": "Deitado de bruços, flexione os joelhos trazendo o rolo em direção ao glúteo. Mantenha o quadril colado no banco durante a execução."
   },
   {
     "id": "leg_stiff_bar",
     "name": "Stiff com Barra",
     "muscleGroup": "Pernas",
-    "target": "Posterior/Glúteo",
+    "target": "Posterior",
     "equipment": "Barra",
     "mechanic": "Composto",
     "img": "assets/img/stiff.gif",
-    "instructions": "Pés na largura do quadril, joelhos levemente flexionados. Desça a barra rente às pernas, jogando o quadril para trás e mantendo a coluna reta. Desça até sentir o alongamento do posterior e retorne contraindo o glúteo."
+    "instructions": "Pés na largura do quadril, joelhos semi-flexionados. Desça a barra rente às pernas jogando o quadril para trás. Mantenha a coluna reta."
   },
   {
     "id": "leg_stiff_db",
     "name": "Stiff com Halteres",
     "muscleGroup": "Pernas",
-    "target": "Posterior/Glúteo",
+    "target": "Posterior",
     "equipment": "Halteres",
     "mechanic": "Composto",
     "img": "assets/img/stiff-alter.gif",
-    "instructions": "Segure os halteres à frente das coxas. Mantenha as costas retas e os joelhos semi-flexionados. Incline o tronco à frente descendo os pesos rente às pernas e jogando o quadril para trás."
+    "instructions": "Mesma execução do Stiff com barra, mas segurando halteres. Foque em alongar a posterior sem curvar as costas."
   },
   {
     "id": "leg_glute_kick",
     "name": "Glúteo Coice (Máquina)",
     "muscleGroup": "Pernas",
-    "target": "Glúteo Máximo",
+    "target": "Glúteo",
     "equipment": "Máquina",
     "mechanic": "Isolado",
     "img": "assets/img/gluteo-coice-maquina.gif",
-    "instructions": "Apoie o peito na almofada da máquina. Empurre a plataforma para trás estendendo o quadril completamente. Contraia o glúteo no final do movimento e retorne controlando."
+    "instructions": "Apoie o peito na máquina. Empurre a plataforma para trás estendendo o quadril completamente. Contraia o glúteo no topo."
   },
   {
     "id": "leg_glute_bridge",
-    "name": "Elevação Pélvica (Banco)",
+    "name": "Elevação Pélvica",
     "muscleGroup": "Pernas",
     "target": "Glúteo",
-    "equipment": "Banco/Barra",
+    "equipment": "Banco",
     "mechanic": "Isolado",
     "img": "assets/img/gluteo.gif",
-    "instructions": "Apoie as escápulas na borda do banco. Coloque a barra sobre a dobra do quadril. Eleve o quadril contraindo forte o glúteo no topo até alinhar o corpo. Não force a lombar."
+    "instructions": "Apoie as escápulas no banco. Eleve o quadril contraindo forte o glúteo no topo até alinhar o corpo com as coxas."
   },
   {
     "id": "calf_hack",
     "name": "Panturrilha no Hack",
     "muscleGroup": "Pernas",
     "target": "Gastrocnêmio",
-    "equipment": "Hack Machine",
+    "equipment": "Hack",
     "mechanic": "Isolado",
     "img": "assets/img/panturrilha-hack.gif",
-    "instructions": "Posicione os ombros nas almofadas do Hack. Coloque apenas a ponta dos pés na base da plataforma. Realize a flexão plantar (subir na ponta dos pés) com a maior amplitude possível."
+    "instructions": "Posicione os ombros nas almofadas. Coloque a ponta dos pés na base e realize a flexão plantar com máxima amplitude."
   },
   {
     "id": "calf_leg45",
-    "name": "Panturrilha no Leg Press 45",
+    "name": "Panturrilha no Leg 45",
     "muscleGroup": "Pernas",
     "target": "Gastrocnêmio",
-    "equipment": "Leg Press 45",
+    "equipment": "Leg Press",
     "mechanic": "Isolado",
     "img": "assets/img/panturrilha-leg-45.gif",
-    "instructions": "No Leg Press, apoie apenas a ponta dos pés na base da plataforma. Mantenha os joelhos semi-estendidos (não travados). Empurre a plataforma estendendo os tornozelos e retorne alongando bem."
+    "instructions": "Apoie a ponta dos pés na base. Empurre a plataforma estendendo os tornozelos e retorne alongando o calcanhar."
   },
   {
     "id": "calf_leg180",
     "name": "Panturrilha Leg Horizontal",
     "muscleGroup": "Pernas",
     "target": "Gastrocnêmio",
-    "equipment": "Leg Press Horizontal",
+    "equipment": "Leg Press",
     "mechanic": "Isolado",
     "img": "assets/img/panturrilha-leg-180.gif",
-    "instructions": "Sente-se no Leg Horizontal. Apoie a ponta dos pés na borda da plataforma. Empurre a plataforma estendendo os tornozelos e retorne deixando o calcanhar passar da linha da base."
+    "instructions": "No Leg Horizontal, empurre a plataforma estendendo apenas os tornozelos. Mantenha os joelhos estendidos."
   },
   {
     "id": "calf_stand",
-    "name": "Panturrilha em Pé (Máquina)",
+    "name": "Panturrilha em Pé",
     "muscleGroup": "Pernas",
     "target": "Gastrocnêmio",
     "equipment": "Máquina",
     "mechanic": "Isolado",
     "img": "assets/img/panturrilha-maquina.gif",
-    "instructions": "Apoie os ombros nas almofadas e fique na ponta dos pés no degrau. Mantenha o corpo reto. Desça os calcanhares até alongar bem e suba o máximo possível. Segure 1 segundo no topo."
+    "instructions": "Apoie os ombros, corpo reto. Suba na ponta dos pés e segure 1 segundo no topo antes de descer."
   },
   {
     "id": "calf_seat",
     "name": "Panturrilha Sentado",
     "muscleGroup": "Pernas",
     "target": "Sólio",
-    "equipment": "Banco Sóleo",
+    "equipment": "Banco",
     "mechanic": "Isolado",
     "img": "assets/img/panturrilha-sentado.gif",
-    "instructions": "Sente-se e ajuste o apoio sobre as coxas (próximo aos joelhos). Libere a trava. Realize o movimento de subir e descer os calcanhares com amplitude total. Foco no músculo sóleo."
+    "instructions": "Sentado, apoie a almofada nas coxas. Realize o movimento de subir e descer os calcanhares. Foco no músculo sóleo."
   },
   {
     "id": "chest_sup_db",
     "name": "Supino Reto com Halteres",
     "muscleGroup": "Peitoral",
-    "target": "Peitoral Médio",
+    "target": "Médio",
     "equipment": "Halteres",
     "mechanic": "Composto",
     "img": "assets/img/supino-reto-alter.gif",
-    "instructions": "Deitado no banco reto, segure os halteres ao lado do peito. Empurre-os para cima, estendendo os braços e convergindo os pesos no topo sem encostá-los."
+    "instructions": "Deitado, empurre os halteres para cima na linha do peito, convergindo no topo sem encostar os pesos."
   },
   {
     "id": "chest_sup_inc_db",
     "name": "Supino Inclinado com Halteres",
     "muscleGroup": "Peitoral",
-    "target": "Peitoral Superior",
+    "target": "Superior",
     "equipment": "Halteres",
     "mechanic": "Composto",
     "img": "assets/img/supino-inclinado-alter.gif",
-    "instructions": "Ajuste o banco a 45 graus. Segure os halteres na altura dos ombros. Empurre para cima e levemente para dentro, focando na parte superior do peito."
+    "instructions": "Banco a 45º. Empurre os halteres para cima focando na parte superior do peito."
   },
   {
     "id": "chest_sup_inc_mach",
     "name": "Supino Inclinado Máquina",
     "muscleGroup": "Peitoral",
-    "target": "Peitoral Superior",
+    "target": "Superior",
     "equipment": "Máquina",
     "mechanic": "Composto",
     "img": "assets/img/supino-inclinado-maquina.gif",
-    "instructions": "Sente-se na máquina com as costas apoiadas. Segure as manoplas na altura do peito superior. Empurre as alavancas para frente e para cima até estender os braços."
+    "instructions": "Sente-se e empurre as manoplas para frente e para cima até estender os braços."
   },
   {
     "id": "chest_fly_db",
@@ -277,57 +277,57 @@
     "equipment": "Halteres",
     "mechanic": "Isolado",
     "img": "assets/img/crucifixo-reto-alter.gif",
-    "instructions": "Deitado no banco reto, segure os halteres acima do peito com as palmas viradas uma para a outra. Abra os braços com os cotovelos levemente flexionados até sentir o alongamento e feche abraçando."
+    "instructions": "Deitado, abra os braços com cotovelos semi-flexionados até sentir alongar. Feche os braços acima do peito."
   },
   {
     "id": "chest_fly_inc_db",
     "name": "Crucifixo Inclinado (Halteres)",
     "muscleGroup": "Peitoral",
-    "target": "Peitoral Superior",
+    "target": "Superior",
     "equipment": "Halteres",
     "mechanic": "Isolado",
     "img": "assets/img/crucifixo-inclinado-alter.gif",
-    "instructions": "No banco inclinado, inicie com os pesos acima do peito. Abra os braços lateralmente, mantendo a ligeira flexão dos cotovelos, e retorne à posição inicial."
+    "instructions": "No banco inclinado, abra os braços lateralmente mantendo a flexão dos cotovelos. Foque no peitoral superior."
   },
   {
     "id": "chest_cross",
-    "name": "Crucifixo no Cross (Polia Média)",
+    "name": "Crucifixo no Cross",
     "muscleGroup": "Peitoral",
     "target": "Geral",
     "equipment": "Crossover",
     "mechanic": "Isolado",
     "img": "assets/img/cruxifixo-cross.gif",
-    "instructions": "Em pé no centro do aparelho, segure as manoplas. Com os cotovelos semi-flexionados, traga as mãos até se encontrarem no centro do peito. Retorne controlando a abertura."
+    "instructions": "Em pé, puxe as polias até as mãos se encontrarem no centro do tronco. Controle a volta."
   },
   {
     "id": "chest_cross_high",
     "name": "Crossover Polia Alta",
     "muscleGroup": "Peitoral",
-    "target": "Peitoral Inferior",
+    "target": "Inferior",
     "equipment": "Crossover",
     "mechanic": "Isolado",
     "img": "assets/img/Cross-polia-cima.gif",
-    "instructions": "Posicione as polias no topo. Puxe as manoplas de cima para baixo e para frente, fechando as mãos na linha da cintura. Mantenha o tronco levemente inclinado à frente."
+    "instructions": "Puxe as polias de cima para baixo, fechando as mãos na linha da cintura."
   },
   {
     "id": "chest_peckdeck",
     "name": "Peck Deck (Voador)",
     "muscleGroup": "Peitoral",
-    "target": "Peitoral Médio",
+    "target": "Médio",
     "equipment": "Máquina",
     "mechanic": "Isolado",
     "img": "assets/img/Packdack.gif",
-    "instructions": "Sente-se com as costas apoiadas. Coloque os braços nos apoios (cotovelos a 90 graus). Junte os braços no centro do corpo, contraindo o peitoral, e retorne à posição inicial."
+    "instructions": "Braços nos apoios (cotovelos 90º). Junte os braços no centro contraindo o peitoral."
   },
   {
-    "id": "chest_fly_mach",
-    "name": "Voador (Máquina)",
-    "muscleGroup": "Peitoral",
-    "target": "Peitoral Médio",
+    "id": "back_fly_mach",
+    "name": "Voador Inverso (Dorsal)",
+    "muscleGroup": "Costas",
+    "target": "Posterior Ombro",
     "equipment": "Máquina",
     "mechanic": "Isolado",
     "img": "assets/img/voador.gif",
-    "instructions": "Variação do Peck Deck com braços estendidos. Segure as manoplas laterais e traga-as à frente do corpo em movimento circular, mantendo os cotovelos levemente flexionados."
+    "instructions": "Sente-se de frente para o encosto. Segure as manoplas e abra os braços para trás, focando no posterior de ombro e costas."
   },
   {
     "id": "chest_pushup",
@@ -337,27 +337,27 @@
     "equipment": "Solo",
     "mechanic": "Composto",
     "img": "assets/img/flexao.gif",
-    "instructions": "Mãos no chão na largura dos ombros, corpo em prancha. Desça o peito até próximo ao chão, mantendo os cotovelos a 45 graus do tronco. Empurre o chão para retornar."
+    "instructions": "Corpo em prancha. Desça o peito até o chão e empurre. Mantenha o core contraído."
   },
   {
     "id": "chest_pushup_inc",
     "name": "Flexão Inclinada",
     "muscleGroup": "Peitoral",
-    "target": "Peitoral Inferior",
-    "equipment": "Banco/Caixa",
+    "target": "Inferior",
+    "equipment": "Banco",
     "mechanic": "Composto",
     "img": "assets/img/flexao-inclinada.gif",
-    "instructions": "Apoie as mãos em um banco ou caixa elevada. Mantenha o corpo reto. Desça o peito em direção à borda do apoio e empurre para voltar."
+    "instructions": "Apoie as mãos em um banco ou caixa. Desça o peito em direção à borda e empurre."
   },
   {
     "id": "back_pull_wide",
     "name": "Puxada Alta Pronada",
     "muscleGroup": "Costas",
-    "target": "Dorsal (Largura)",
+    "target": "Dorsal",
     "equipment": "Polia",
     "mechanic": "Composto",
     "img": "assets/img/puxada-alta-pronada.gif",
-    "instructions": "Segure a barra com pegada aberta e palmas para frente. Puxe a barra em direção à parte superior do peito, inclinando levemente o tronco para trás e fechando as escápulas."
+    "instructions": "Pegada aberta. Puxe a barra em direção ao peito superior, fechando as escápulas."
   },
   {
     "id": "back_pulldown",
@@ -367,47 +367,47 @@
     "equipment": "Polia",
     "mechanic": "Composto",
     "img": "assets/img/pulldown.gif",
-    "instructions": "Sentado na máquina, puxe a barra verticalmente até a altura do queixo ou peito superior. Mantenha os cotovelos apontando para o chão."
+    "instructions": "Puxe a barra verticalmente até a altura do queixo."
   },
   {
     "id": "back_graviton",
-    "name": "Graviton (Barra Assistida)",
+    "name": "Graviton (Barra Fixa)",
     "muscleGroup": "Costas",
-    "target": "Dorsal Total",
+    "target": "Dorsal",
     "equipment": "Máquina",
     "mechanic": "Composto",
     "img": "assets/img/barra-graviton.gif",
-    "instructions": "Ajoelhe-se na plataforma da máquina. Segure as manoplas acima da cabeça. Puxe o corpo para cima simulando uma barra fixa, usando o contrapeso para ajudar."
+    "instructions": "Ajoelhe-se na plataforma. Puxe o corpo para cima simulando a barra fixa."
   },
   {
     "id": "back_row_bar",
-    "name": "Remada Curvada (Barra)",
+    "name": "Remada Curvada",
     "muscleGroup": "Costas",
-    "target": "Espessura/Lombar",
+    "target": "Espessura",
     "equipment": "Barra",
     "mechanic": "Composto",
     "img": "assets/img/remada-barra.gif",
-    "instructions": "Em pé, incline o tronco à frente (45 graus) mantendo a coluna reta. Segure a barra com pegada pronada ou supinada. Puxe a barra em direção ao abdômen, retraindo as escápulas."
+    "instructions": "Tronco inclinado, coluna reta. Puxe a barra em direção ao abdômen."
   },
   {
     "id": "back_row_t",
     "name": "Remada Cavalinho",
     "muscleGroup": "Costas",
-    "target": "Miolo das Costas",
+    "target": "Miolo Costas",
     "equipment": "Barra T",
     "mechanic": "Composto",
     "img": "assets/img/remada-cavalinho.gif",
-    "instructions": "Pise nas plataformas, incline o tronco e segure as manoplas da barra T. Puxe a carga em direção ao peito, mantendo os cotovelos próximos ao corpo e as costas seladas."
+    "instructions": "Puxe a barra T em direção ao peito, mantendo as costas seladas."
   },
   {
     "id": "back_row_low",
-    "name": "Remada Baixa (Triângulo)",
+    "name": "Remada Baixa",
     "muscleGroup": "Costas",
-    "target": "Dorsal Inferior",
+    "target": "Dorsal",
     "equipment": "Polia",
     "mechanic": "Composto",
     "img": "assets/img/remada-baixa.gif",
-    "instructions": "Sentado no chão ou banco baixo, segure o triângulo. Mantenha a coluna ereta. Puxe o acessório em direção ao umbigo, alongando bem os braços na volta sem curvar as costas."
+    "instructions": "Sentado, puxe o triângulo em direção ao umbigo. Alongue os braços na volta."
   },
   {
     "id": "back_row_mach",
@@ -417,7 +417,7 @@
     "equipment": "Máquina",
     "mechanic": "Composto",
     "img": "assets/img/remada-maquina.gif",
-    "instructions": "Apoie o peito na almofada da máquina. Segure as manoplas (neutra ou pronada). Puxe os cotovelos para trás o máximo possível, contraindo as costas."
+    "instructions": "Apoie o peito. Puxe as manoplas para trás contraindo as costas."
   },
   {
     "id": "back_row_cable",
@@ -427,227 +427,217 @@
     "equipment": "Cabo",
     "mechanic": "Composto",
     "img": "assets/img/remada-cabo.gif",
-    "instructions": "Variação de remada na polia. Sentado, puxe a manopla individual ou barra em direção à lateral do corpo, mantendo o cotovelo rente ao tronco."
+    "instructions": "Puxe a manopla em direção ao corpo, mantendo o cotovelo junto ao tronco."
   },
   {
     "id": "back_row_db",
     "name": "Remada Serrote",
     "muscleGroup": "Costas",
-    "target": "Dorsal Unilateral",
+    "target": "Unilateral",
     "equipment": "Halteres",
     "mechanic": "Composto",
     "img": "assets/img/serrote-alter.gif",
-    "instructions": "Apoie uma mão e o joelho oposto no banco. Mantenha a coluna reta. Puxe o halter lateralmente em direção ao quadril, elevando o cotovelo acima da linha das costas."
+    "instructions": "Apoie no banco. Puxe o halter lateralmente em direção ao quadril."
   },
   {
     "id": "back_deadlift_mach",
     "name": "Levantamento Terra (Máquina)",
     "muscleGroup": "Costas",
-    "target": "Lombar/Pernas",
+    "target": "Lombar/Geral",
     "equipment": "Máquina",
     "mechanic": "Composto",
     "img": "assets/img/terra-articulado.gif",
-    "instructions": "Posicione-se dentro da máquina articulada. Segure as alças laterais. Mantenha a coluna reta e levante a carga estendendo o quadril e os joelhos simultaneamente."
+    "instructions": "Levante a carga estendendo o corpo. Mantenha a coluna reta o tempo todo."
   },
   {
     "id": "sh_press_db",
-    "name": "Desenvolvimento com Halteres",
+    "name": "Desenvolvimento Halteres",
     "muscleGroup": "Ombros",
-    "target": "Deltoide Anterior",
+    "target": "Anterior",
     "equipment": "Halteres",
     "mechanic": "Composto",
     "img": "assets/img/desenvolvimento-alter.gif",
-    "instructions": "Sentado no banco com encosto, segure os halteres na altura das orelhas. Empurre-os para cima até estender os braços e retorne controlando."
+    "instructions": "Sentado, empurre os halteres para cima da cabeça."
   },
   {
     "id": "sh_front_plate",
     "name": "Elevação Frontal (Anilha)",
     "muscleGroup": "Ombros",
-    "target": "Deltoide Anterior",
+    "target": "Anterior",
     "equipment": "Anilha",
     "mechanic": "Isolado",
     "img": "assets/img/desenvolvimento-anilha-frontal.gif",
-    "instructions": "Em pé, segure uma anilha com as duas mãos. Eleve os braços estendidos à frente do corpo até a altura dos olhos e desça devagar."
+    "instructions": "Segure a anilha e eleve os braços estendidos até a altura dos ombros."
   },
   {
     "id": "sh_lat_mach",
     "name": "Elevação Lateral Máquina",
     "muscleGroup": "Ombros",
-    "target": "Deltoide Lateral",
+    "target": "Lateral",
     "equipment": "Máquina",
     "mechanic": "Isolado",
     "img": "assets/img/desenvolvimento-lateral-maquina.gif",
-    "instructions": "Sente-se na máquina e apoie os antebraços nas almofadas. Eleve os cotovelos lateralmente até a linha dos ombros."
+    "instructions": "Eleve os cotovelos lateralmente na máquina até a linha dos ombros."
   },
   {
     "id": "sh_press_mach",
     "name": "Desenvolvimento Máquina",
     "muscleGroup": "Ombros",
-    "target": "Deltoide Anterior",
+    "target": "Anterior",
     "equipment": "Máquina",
     "mechanic": "Composto",
     "img": "assets/img/desenvolvimento-maquina.gif",
-    "instructions": "Sente-se e ajuste a altura do banco. Segure as manoplas e empurre para cima estendendo os braços. Controle o retorno."
+    "instructions": "Empurre as manoplas para cima estendendo os braços."
   },
   {
     "id": "sh_lat_raise",
-    "name": "Elevação Lateral (Halteres)",
+    "name": "Elevação Lateral Halteres",
     "muscleGroup": "Ombros",
-    "target": "Deltoide Lateral",
+    "target": "Lateral",
     "equipment": "Halteres",
     "mechanic": "Isolado",
     "img": "assets/img/desenvolvimento-lateral-alter.gif",
-    "instructions": "Em pé, segure os halteres ao lado do corpo. Eleve os braços lateralmente até a altura dos ombros, com os cotovelos levemente flexionados."
+    "instructions": "Eleve os braços lateralmente até a altura dos ombros."
   },
   {
     "id": "sh_rev_fly",
-    "name": "Crucifixo Inverso Máquina",
+    "name": "Crucifixo Inverso (Máquina)",
     "muscleGroup": "Ombros",
-    "target": "Deltoide Posterior",
+    "target": "Posterior",
     "equipment": "Máquina",
     "mechanic": "Isolado",
     "img": "assets/img/posterior-ombro.gif",
-    "instructions": "Sente-se de frente para o encosto do Voador. Segure as manoplas com os braços estendidos. Empurre para trás focando na parte posterior do ombro."
+    "instructions": "No Voador invertido, empurre as manoplas para trás focando no posterior de ombro."
   },
   {
     "id": "tr_rope",
     "name": "Tríceps Corda",
     "muscleGroup": "Tríceps",
-    "target": "Cabeça Lateral",
+    "target": "Lateral",
     "equipment": "Polia",
     "mechanic": "Isolado",
     "img": "assets/img/triceps-corda.gif",
-    "instructions": "Na polia alta, segure a corda com as palmas voltadas uma para a outra. Puxe para baixo estendendo os cotovelos e abrindo as mãos no final do movimento."
+    "instructions": "Puxe a corda para baixo, abrindo as mãos no final da extensão."
   },
   {
     "id": "tr_french_db",
-    "name": "Tríceps Francês (Banco)",
+    "name": "Tríceps Francês",
     "muscleGroup": "Tríceps",
-    "target": "Cabeça Longa",
+    "target": "Longa",
     "equipment": "Halteres",
     "mechanic": "Isolado",
     "img": "assets/img/triceps-frances-banco.gif",
-    "instructions": "Sentado, segure um halter com as duas mãos atrás da cabeça. Estenda os braços para cima, mantendo os cotovelos apontados para o teto."
+    "instructions": "Sentado, segure o halter atrás da cabeça e estenda os braços para cima."
   },
   {
     "id": "tr_french_cable",
     "name": "Tríceps Francês (Polia)",
     "muscleGroup": "Tríceps",
-    "target": "Cabeça Longa",
+    "target": "Longa",
     "equipment": "Polia",
     "mechanic": "Isolado",
     "img": "assets/img/triceps-frances-cabo.gif",
-    "instructions": "De costas para a polia baixa, segure a corda ou barra atrás da cabeça. Incline o tronco à frente e estenda os braços na diagonal/cima."
+    "instructions": "De costas para a polia, incline o corpo e estenda os braços à frente."
   },
   {
     "id": "tr_dip",
     "name": "Mergulho (Graviton)",
     "muscleGroup": "Tríceps",
-    "target": "Tríceps Geral",
+    "target": "Geral",
     "equipment": "Máquina",
     "mechanic": "Composto",
     "img": "assets/img/triceps-graviton.gif",
-    "instructions": "Ajoelhe-se ou fique em pé na plataforma. Segure as barras paralelas. Empurre a plataforma para baixo estendendo os cotovelos e retorne flexionando até 90 graus."
+    "instructions": "Empurre a plataforma para baixo estendendo os cotovelos."
   },
   {
     "id": "tr_skull",
     "name": "Tríceps Testa",
     "muscleGroup": "Tríceps",
-    "target": "Cabeça Longa/Média",
+    "target": "Geral",
     "equipment": "Barra",
     "mechanic": "Isolado",
     "img": "assets/img/triceps-testa-banco-barra.gif",
-    "instructions": "Deitado no banco, segure a barra acima do peito. Flexione os cotovelos descendo a barra em direção à testa. Mantenha os cotovelos fixos e estenda os braços novamente."
+    "instructions": "Deitado, desça a barra até a testa flexionando os cotovelos e estenda."
   },
   {
     "id": "bi_alt",
     "name": "Rosca Alternada",
     "muscleGroup": "Bíceps",
-    "target": "Bíceps Geral",
+    "target": "Geral",
     "equipment": "Halteres",
     "mechanic": "Isolado",
     "img": "assets/img/rosca-alternada.gif",
-    "instructions": "Em pé, segure os halteres. Flexione um braço de cada vez, girando o punho (supinação) conforme sobe o peso. Alterne os lados."
+    "instructions": "Em pé, flexione um braço de cada vez girando o punho."
   },
   {
     "id": "bi_inc",
     "name": "Rosca Inclinada",
     "muscleGroup": "Bíceps",
-    "target": "Cabeça Longa",
+    "target": "Longa",
     "equipment": "Banco 45",
     "mechanic": "Isolado",
     "img": "assets/img/rosca-banco.gif",
-    "instructions": "Deite-se no banco inclinado a 45 graus. Deixe os braços estendidos para trás do tronco. Realize a rosca flexionando os cotovelos sem movê-los para frente."
+    "instructions": "Banco inclinado. Realize a rosca mantendo os braços para trás do tronco."
   },
   {
     "id": "bi_scott_mach",
     "name": "Rosca Scott Máquina",
     "muscleGroup": "Bíceps",
-    "target": "Cabeça Curta",
+    "target": "Curta",
     "equipment": "Máquina",
     "mechanic": "Isolado",
     "img": "assets/img/rosca-scoot-maquina.gif",
-    "instructions": "Apoie os braços na almofada da máquina. Segure as manoplas e puxe em direção ao rosto, contraindo o bíceps. Estenda os braços controladamente."
+    "instructions": "Apoie os braços e puxe a manopla em direção ao rosto."
   },
   {
     "id": "bi_scott_bar",
     "name": "Rosca Scott (Barra W)",
     "muscleGroup": "Bíceps",
-    "target": "Cabeça Curta",
+    "target": "Curta",
     "equipment": "Banco Scott",
     "mechanic": "Isolado",
     "img": "assets/img/biceps-bancoscoot.gif",
-    "instructions": "Apoie os tríceps no banco Scott. Segure a barra W. Realize a flexão dos cotovelos sem tirar os braços do apoio. Desça até quase estender."
+    "instructions": "Apoie os tríceps no banco e faça a rosca com a barra W."
   },
   {
     "id": "bi_cable",
     "name": "Rosca Direta (Polia)",
     "muscleGroup": "Bíceps",
-    "target": "Bíceps Geral",
+    "target": "Geral",
     "equipment": "Polia",
     "mechanic": "Isolado",
     "img": "assets/img/biceps-cabo.gif",
-    "instructions": "Segure a barra reta ou W da polia baixa. Mantenha os cotovelos ao lado do corpo. Flexione os braços trazendo a barra até o peito e desça devagar."
+    "instructions": "Segure a barra da polia baixa e traga até o peito."
   },
   {
     "id": "bi_cable_var",
-    "name": "Rosca Polia Variação",
+    "name": "Rosca Polia (Variação)",
     "muscleGroup": "Bíceps",
-    "target": "Bíceps Geral",
+    "target": "Geral",
     "equipment": "Polia",
     "mechanic": "Isolado",
-    "img": "assets/img/9c92843a-6b90-428b-a868-9af4b11bad38.jpg",
-    "instructions": "Variação de rosca na polia. Mantenha a postura ereta e os cotovelos fixos ao lado do tronco durante o movimento."
+    "img": "assets/img/biceps-cabo.gif",
+    "instructions": "Variação de rosca na polia."
   },
   {
     "id": "bi_trx",
-    "name": "Rosca Bíceps no TRX",
+    "name": "Rosca Bíceps TRX",
     "muscleGroup": "Bíceps",
-    "target": "Bíceps Geral",
+    "target": "Geral",
     "equipment": "TRX",
     "mechanic": "Isolado",
     "img": "assets/img/TRX.gif",
-    "instructions": "Segure as alças e incline o corpo para trás. Mantenha os cotovelos altos e puxe o corpo flexionando os braços, levando as mãos em direção à testa."
-  },
-  {
-    "id": "bi_trx_var",
-    "name": "Rosca Bíceps TRX (Variação)",
-    "muscleGroup": "Bíceps",
-    "target": "Bíceps Geral",
-    "equipment": "TRX",
-    "mechanic": "Isolado",
-    "img": "assets/img/947ac249-475d-44ed-bed3-8dc433374f59.png",
-    "instructions": "Variação do exercício no TRX. Foco na estabilização do core enquanto flexiona os braços."
+    "instructions": "Incline o corpo para trás e puxe flexionando os cotovelos."
   },
   {
     "id": "arm_forearm",
     "name": "Rosca de Punho",
     "muscleGroup": "Antebraço",
-    "target": "Flexores do Punho",
+    "target": "Flexores",
     "equipment": "Barra",
     "mechanic": "Isolado",
     "img": "assets/img/antebraco-barra.gif",
-    "instructions": "Apoie os antebraços em um banco, deixando os punhos livres. Segure a barra e realize apenas o movimento de flexão e extensão dos punhos."
+    "instructions": "Apoie os antebraços e realize apenas a flexão dos punhos."
   },
   {
     "id": "cardio_tread",
@@ -657,7 +647,7 @@
     "equipment": "Máquina",
     "mechanic": "Cardio",
     "img": "assets/img/esteira.gif",
-    "instructions": "Caminhada ou corrida na esteira. Mantenha o corpo ereto e o ritmo constante conforme o objetivo."
+    "instructions": "Caminhada ou corrida na esteira."
   },
   {
     "id": "cardio_bike",
@@ -667,26 +657,26 @@
     "equipment": "Máquina",
     "mechanic": "Cardio",
     "img": "assets/img/bike.gif",
-    "instructions": "Ajuste o banco na altura do quadril. Pedale mantendo um ritmo constante ou intervalado."
+    "instructions": "Pedale mantendo o ritmo constante."
   },
   {
     "id": "cardio_airbike",
     "name": "Air Bike",
     "muscleGroup": "Cardio",
-    "target": "Intensidade/Full Body",
+    "target": "Intensidade",
     "equipment": "Máquina",
     "mechanic": "Cardio",
     "img": "assets/img/Bike-2.gif",
-    "instructions": "Pedale e empurre/puxe as manoplas simultaneamente. A resistência aumenta conforme a velocidade do movimento."
+    "instructions": "Pedale e empurre as manoplas com força."
   },
   {
     "id": "cardio_climber",
     "name": "Mountain Climber",
     "muscleGroup": "Cardio",
-    "target": "Alta Intensidade",
+    "target": "Intensidade",
     "equipment": "Solo",
     "mechanic": "Cardio",
     "img": "assets/img/prancha-corrida.gif",
-    "instructions": "Em posição de flexão de braço, traga os joelhos alternadamente em direção ao peito com velocidade, como se estivesse correndo no lugar."
+    "instructions": "Em posição de flexão, alterne os joelhos no peito rapidamente."
   }
 ]
