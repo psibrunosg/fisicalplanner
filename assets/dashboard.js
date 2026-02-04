@@ -3,9 +3,8 @@ import { db, ref, update, get, child, remove, push, set } from "./firebase.js";
 document.addEventListener("DOMContentLoaded", async () => {
     
     // === CONFIGURAÇÃO: ID DO TREINADOR PRINCIPAL (TREINADOR A) ===
-    // IMPORTANTE: Substitua pelo ID do admin principal (ex: 'admin-at-fitlife-com')
-    // Isso garante que o Treinador A veja os alunos que se cadastraram sozinhos no site.
-    const MASTER_TRAINER_ID = "brunosg2711@gmail.com"; 
+    // Use o ID sanitizado (substitua pontos por hifens e @ por -at-)
+    const MASTER_TRAINER_ID = "brunosg2711-at-gmail-com"; 
 
     // 1. SEGURANÇA
     const sessionUser = JSON.parse(localStorage.getItem("fitUser"));
@@ -16,6 +15,15 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // ID do Treinador Logado agora
     const currentTrainerId = sessionUser.email.replace(/\./g, '-').replace(/@/g, '-at-');
+
+    // === VERIFICAÇÃO DE SUPER ADMIN (MOSTRAR BOTÃO NOVO TREINADOR) ===
+    if (currentTrainerId === MASTER_TRAINER_ID) {
+        const btnMaster = document.getElementById("btnMasterAdmin");
+        if (btnMaster) {
+            btnMaster.style.display = "flex"; // Revela o botão na sidebar
+        }
+    }
+    // ================================================================
 
     document.getElementById("adminName").innerText = sessionUser.name.split(" ")[0];
     document.getElementById("logoutBtn").addEventListener("click", () => {
@@ -29,6 +37,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     navLinks.forEach(link => {
         link.addEventListener("click", (e) => {
+            // Se for link externo (ex: cadastro de treinador), deixa abrir
+            if (link.target === "_blank") return;
+
             e.preventDefault();
             navLinks.forEach(l => l.classList.remove("active"));
             link.classList.add("active");
@@ -71,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (error) { console.error("Erro users:", error); }
 
         try {
-            const res = await fetch('data/exercises.json'); // Ajustado para caminho local padrão se necessário
+            const res = await fetch('data/exercises.json'); 
             dbExercises = await res.json();
         } catch (e) { console.error("Erro exercises:", e); }
 
@@ -179,7 +190,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             const h = parseFloat(heightInput.value) / 100;
             if(w && h) document.getElementById("aval_bmi").value = (w / (h*h)).toFixed(2);
             
-            // Lógica Pollock simplificada
             const triceps = parseFloat(document.getElementById("fold_triceps")?.value || 0);
             const abd = parseFloat(document.getElementById("fold_abdominal")?.value || 0);
             const supra = parseFloat(document.getElementById("fold_suprailiac")?.value || 0);
@@ -207,7 +217,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 height: document.getElementById("aval_height").value,
                 bmi: document.getElementById("aval_bmi").value,
                 fat: document.getElementById("aval_fat_perc").value,
-                muscle: document.getElementById("aval_muscle_kg").value
+                muscle: document.getElementById("aval_muscle_kg").value,
+                visceral: document.getElementById("aval_visceral")?.value || "",
+                metabolic_age: document.getElementById("aval_metabolic_age")?.value || ""
             },
             circ: {
                 shoulder: document.getElementById("circ_shoulder")?.value,
