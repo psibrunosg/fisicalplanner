@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FitLife - Cadastro de Treinador</title>
+    <title>FitLife | Cadastro de Equipe</title>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
@@ -26,10 +26,6 @@
         
         .back-link { display: block; text-align: center; margin-top: 1.5rem; color: #666; text-decoration: none; font-size: 0.9rem; }
         .back-link:hover { color: white; }
-
-        /* Destaque para a chave de segurança */
-        .security-field input { border-color: #ff4444; }
-        .security-field input:focus { border-color: #ff6666; box-shadow: 0 0 10px rgba(255, 68, 68, 0.2); }
     </style>
 </head>
 <body>
@@ -37,34 +33,29 @@
     <div class="signup-container">
         <div class="logo">
             <h2>Fit<span>Coach</span></h2>
-            <p>Acesso exclusivo para Treinadores</p>
+            <p>Cadastrar Novo Treinador</p>
         </div>
 
         <form id="trainerSignupForm">
             <div class="form-group">
-                <label>Nome Completo</label>
-                <input type="text" id="t_name" placeholder="Ex: Treinador Bruno" required>
+                <label>Nome do Treinador</label>
+                <input type="text" id="t_name" placeholder="Ex: Treinador João" required>
             </div>
 
             <div class="form-group">
-                <label>E-mail Profissional</label>
-                <input type="email" id="t_email" placeholder="email@treinador.com" required>
+                <label>E-mail de Acesso</label>
+                <input type="email" id="t_email" placeholder="joao@fitlife.com" required>
             </div>
 
             <div class="form-group">
-                <label>Senha</label>
-                <input type="password" id="t_password" placeholder="******" required>
+                <label>Senha Inicial</label>
+                <input type="text" id="t_password" placeholder="******" value="123456" required>
             </div>
 
-            <div class="form-group security-field">
-                <label style="color:#ff6666;"><i class="ph ph-lock-key"></i> Chave Mestra (Segurança)</label>
-                <input type="password" id="t_secret" placeholder="Código de autorização" required>
-            </div>
-
-            <button type="submit" class="btn-primary" id="signupBtn">CADASTRAR ACESSO</button>
+            <button type="submit" class="btn-primary" id="signupBtn">CRIAR CONTA</button>
         </form>
 
-        <a href="index.html" class="back-link">Voltar para Login</a>
+        <a href="dashboard.html" class="back-link">Voltar ao Dashboard</a>
     </div>
 
     <script type="module" src="assets/signup-trainer.js"></script>
