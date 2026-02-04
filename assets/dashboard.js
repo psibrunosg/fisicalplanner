@@ -426,4 +426,112 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     initData();
+    // ===============================================
+    // === NOVO: LÓGICA DE CADASTRO DE ALUNOS ===
+    // ===============================================
+    
+    const modal = document.getElementById("newStudentModal");
+    const openBtn = document.getElementById("openNewStudentBtn");
+    const closeBtn = document.getElementById("closeModalBtn");
+    const createBtn = document.getElementById("createNewUserBtn");
+
+    if(openBtn) openBtn.addEventListener("click", () => modal.classList.add("active"));
+    if(closeBtn) closeBtn.addEventListener("click", () => modal.classList.remove("active"));
+
+    if(createBtn) {
+        createBtn.addEventListener("click", async () => {
+            const name = document.getElementById("new_name").value;
+            const email = document.getElementById("new_email").value;
+            const password = document.getElementById("new_password").value;
+
+            if(!name || !email || !password) return alert("Preencha todos os campos!");
+
+            createBtn.innerText = "CRIANDO...";
+            
+            // Sanitiza email para usar como chave no Firebase
+            const userId = email.replace(/\./g, '-').replace(/@/g, '-at-');
+
+            try {
+                // Cria o usuário na base de dados
+                await set(ref(db, 'users/' + userId), {
+                    name: name,
+                    email: email,
+                    password: password, // Em app real, não salvar senha assim! (MVP only)
+                    createdAt: new Date().toISOString(),
+                    workoutType: "Personalizado", // Padrão
+                    avatar: `https://ui-avatars.com/api/?name=${name.replace(" ", "+")}&background=random`
+                });
+
+                alert("Aluno cadastrado com sucesso!");
+                modal.classList.remove("active");
+                
+                // Limpa campos
+                document.getElementById("new_name").value = "";
+                document.getElementById("new_email").value = "";
+                
+                // Recarrega lista
+                // Se você tiver a função initData() acessível, chame-a. 
+                // Senão, reload na página:
+                window.location.reload(); 
+
+            } catch (e) {
+                alert("Erro ao criar: " + e.message);
+            } finally {
+                createBtn.innerText = "Criar Aluno";
+            }
+        });
+    }
+
+    // ===============================================
+    // === NOVO: LÓGICA DE CONFIGURAÇÕES (SETTINGS) ===
+    // ===============================================
+
+    // 1. Carregar Configurações Salvas
+    const adminUser = JSON.parse(localStorage.getItem("fitUser"));
+    if(document.getElementById("conf_adminName")) document.getElementById("conf_adminName").value = adminUser.name;
+    if(document.getElementById("conf_adminAvatar")) document.getElementById("conf_adminAvatar").value = adminUser.avatar || "";
+    
+    // Tema Salvo?
+    const savedTheme = localStorage.getItem("fitTheme");
+    if(savedTheme === 'light') {
+        document.body.classList.add("light-theme");
+        if(document.getElementById("themeSwitch")) {
+            document.getElementById("themeSwitch").checked = true;
+            document.getElementById("themeIndicator").style.transform = 'translateX(20px)';
+        }
+    }
+
+    // 2. Botão Salvar Perfil
+    const saveProfileBtn = document.getElementById("saveProfileBtn");
+    if(saveProfileBtn) {
+        saveProfileBtn.addEventListener("click", () => {
+            const newName = document.getElementById("conf_adminName").value;
+            const newAvatar = document.getElementById("conf_adminAvatar").value;
+            
+            // Atualiza LocalStorage
+            adminUser.name = newName;
+            if(newAvatar) adminUser.avatar = newAvatar;
+            localStorage.setItem("fitUser", JSON.stringify(adminUser));
+
+            // Atualiza Visual
+            document.getElementById("adminName").innerText = newName.split(" ")[0];
+            if(newAvatar) document.getElementById("topAvatar").src = newAvatar;
+
+            alert("Perfil atualizado!");
+        });
+    }
+
+    // 3. Botão Salvar Sistema (Tema)
+    const themeSwitch = document.getElementById("themeSwitch");
+    if(themeSwitch) {
+        themeSwitch.addEventListener("change", (e) => {
+            if(e.target.checked) {
+                document.body.classList.add("light-theme");
+                localStorage.setItem("fitTheme", "light");
+            } else {
+                document.body.classList.remove("light-theme");
+                localStorage.setItem("fitTheme", "dark");
+            }
+        });
+    }
 });
