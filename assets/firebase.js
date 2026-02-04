@@ -4,13 +4,14 @@ import { getDatabase, ref, set, get, child, update } from "https://www.gstatic.c
 
 // COLE SUA CONFIGURAÇÃO AQUI (Substitua isso pelo que copiou do console)
 const firebaseConfig = {
-  apiKey: "AIzaSyD...",
-  authDomain: "fitlife-app.firebaseapp.com",
-  databaseURL: "https://fitlife-app-default-rtdb.firebaseio.com",
-  projectId: "fitlife-app",
-  storageBucket: "fitlife-app.appspot.com",
-  messagingSenderId: "123...",
-  appId: "1:123..."
+  apiKey: "AIzaSyAjpS8IWMJmlEHw6_7VRHATbLWJeHzbCYU",
+  authDomain: "fisicalplanner.firebaseapp.com",
+  databaseURL: "https://fisicalplanner-default-rtdb.firebaseio.com",
+  projectId: "fisicalplanner",
+  storageBucket: "fisicalplanner.firebasestorage.app",
+  messagingSenderId: "439728765666",
+  appId: "1:439728765666:web:884c65f808b9337a31bcbb",
+  measurementId: "G-8G6JJXX00Z"
 };
 
 // Inicializa
