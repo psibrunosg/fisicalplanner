@@ -140,27 +140,105 @@
         <div id="workoutList" style="padding: 1rem 1.5rem;"></div>
     </div>
 
-    <div id="view-anamnese" class="view-section hidden" style="padding: 1.5rem;">
-        <h2 style="margin-bottom: 1.5rem;">Ficha de Anamnese</h2>
+    <div id="view-anamnese" class="view-section hidden" style="padding: 1.5rem; padding-bottom: 100px;">
+        <h2 style="margin-bottom: 0.5rem;">Ficha de Saúde</h2>
+        <p style="color: #888; font-size: 0.9rem; margin-bottom: 1.5rem;">Preencha com atenção. Isso define a segurança do seu treino.</p>
+
         <div class="anamnese-form">
-            <div class="anamnese-group">
-                <label>Objetivo Principal</label>
-                <select id="anamneseGoal" class="anamnese-input">
-                    <option value="hipertrofia">Hipertrofia (Ganhar Massa)</option>
-                    <option value="emagrecimento">Emagrecimento</option>
-                    <option value="resistencia">Resistência / Condicionamento</option>
-                    <option value="saude">Saúde / Qualidade de Vida</option>
-                </select>
-            </div>
-            <div class="anamnese-group">
-                <label>Possui lesões ou dores crônicas?</label>
-                <textarea id="anamneseInjuries" class="anamnese-input" rows="3" placeholder="Ex: Dor no joelho direito ao agachar..."></textarea>
-            </div>
-            <div class="anamnese-group">
-                <label>Uso de medicamentos?</label>
-                <input type="text" id="anamneseMeds" class="anamnese-input" placeholder="Se sim, quais?">
-            </div>
-            <button id="saveAnamneseBtn" class="btn-login">SALVAR DADOS</button>
+            
+            <details open style="margin-bottom: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid #333;">
+                <summary style="padding: 15px; cursor: pointer; font-weight: bold; color: var(--primary-color);">1. Rotina e Trabalho</summary>
+                <div style="padding: 15px; border-top: 1px solid #333;">
+                    
+                    <div class="anamnese-group">
+                        <label>Sua Ocupação (Profissão)</label>
+                        <input type="text" id="anm_occupation" class="anamnese-input" placeholder="Ex: Escritório, Motorista, Obra...">
+                    </div>
+
+                    <div class="anamnese-group">
+                        <label>No trabalho, você passa a maior parte do tempo:</label>
+                        <select id="anm_work_posture" class="anamnese-input">
+                            <option value="sentado">Sentado (Cadeira)</option>
+                            <option value="pe">De pé (Parado)</option>
+                            <option value="caminhando">Caminhando / Em movimento</option>
+                            <option value="peso">Levantando peso / Esforço físico</option>
+                            <option value="dirigindo">Dirigindo</option>
+                        </select>
+                    </div>
+                </div>
+            </details>
+
+            <details style="margin-bottom: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid #333;">
+                <summary style="padding: 15px; cursor: pointer; font-weight: bold; color: var(--primary-color);">2. Histórico Médico</summary>
+                <div style="padding: 15px; border-top: 1px solid #333;">
+                    
+                    <p style="margin-bottom: 10px; font-size: 0.9rem;">Você ou sua família já tiveram:</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px;">
+                        <label class="check-label"><input type="checkbox" class="med-check" value="cardiopatia_familia"> Cardiopatia na Família</label>
+                        <label class="check-label"><input type="checkbox" class="med-check" value="pressao_alta"> Pressão Alta</label>
+                        <label class="check-label"><input type="checkbox" class="med-check" value="diabetes"> Diabetes</label>
+                        <label class="check-label"><input type="checkbox" class="med-check" value="asma"> Asma / Bronquite</label>
+                        <label class="check-label"><input type="checkbox" class="med-check" value="artrite"> Artrite / Artrose</label>
+                        <label class="check-label"><input type="checkbox" class="med-check" value="coluna"> Problemas de Coluna</label>
+                    </div>
+
+                    <div class="anamnese-group">
+                        <label>Sente algum destes sintomas com frequência?</label>
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 5px;">
+                            <label class="check-label"><input type="checkbox" class="sym-check" value="dor_peito"> Dor no peito</label>
+                            <label class="check-label"><input type="checkbox" class="sym-check" value="falta_ar"> Falta de ar (esforço leve)</label>
+                            <label class="check-label"><input type="checkbox" class="sym-check" value="tontura"> Tontura / Desmaio</label>
+                            <label class="check-label"><input type="checkbox" class="sym-check" value="palpitacao"> Palpitação Cardíaca</label>
+                        </div>
+                    </div>
+
+                    <div class="anamnese-group">
+                        <label>Uso de Medicamentos (Quais?)</label>
+                        <input type="text" id="anm_meds" class="anamnese-input" placeholder="Se não usa, deixe em branco">
+                    </div>
+                </div>
+            </details>
+
+            <details style="margin-bottom: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid #333;">
+                <summary style="padding: 15px; cursor: pointer; font-weight: bold; color: var(--primary-color);">3. Estilo de Vida</summary>
+                <div style="padding: 15px; border-top: 1px solid #333;">
+                    
+                    <div class="anamnese-group">
+                        <label>Fumante?</label>
+                        <select id="anm_smoker" class="anamnese-input">
+                            <option value="nao">Não</option>
+                            <option value="sim">Sim</option>
+                            <option value="ex">Ex-fumante</option>
+                        </select>
+                    </div>
+
+                    <div class="anamnese-group">
+                        <label>Cirurgias ou Lesões Recentes?</label>
+                        <textarea id="anm_injuries" class="anamnese-input" rows="2" placeholder="Ex: Cirurgia no joelho em 2020..."></textarea>
+                    </div>
+
+                    <div class="anamnese-group">
+                        <label>Possui Alergias?</label>
+                        <input type="text" id="anm_allergies" class="anamnese-input" placeholder="Medicamentos, alimentos...">
+                    </div>
+                </div>
+            </details>
+
+            <details style="margin-bottom: 1rem; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid #333;">
+                <summary style="padding: 15px; cursor: pointer; font-weight: bold; color: var(--primary-color);">4. Objetivos Principais</summary>
+                <div style="padding: 15px; border-top: 1px solid #333;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <label class="check-label"><input type="checkbox" class="goal-check" value="hipertrofia"> Hipertrofia</label>
+                        <label class="check-label"><input type="checkbox" class="goal-check" value="emagrecimento"> Emagrecimento</label>
+                        <label class="check-label"><input type="checkbox" class="goal-check" value="resistencia"> Resistência</label>
+                        <label class="check-label"><input type="checkbox" class="goal-check" value="saude"> Saúde / Lazer</label>
+                        <label class="check-label"><input type="checkbox" class="goal-check" value="postura"> Correção Postural</label>
+                        <label class="check-label"><input type="checkbox" class="goal-check" value="social"> Convívio Social</label>
+                    </div>
+                </div>
+            </details>
+
+            <button id="saveAnamneseBtn" class="btn-login" style="margin-top: 1rem;">SALVAR FICHA COMPLETA</button>
         </div>
     </div>
 
