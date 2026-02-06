@@ -1,12 +1,12 @@
 import { db, ref, get, child, push, update } from "./firebase.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // === 1. SEGURANÇA ===
+    // === 1. SEGURANÇA E INICIALIZAÇÃO ===
     const sessionUser = JSON.parse(localStorage.getItem("fitUser"));
     if (!sessionUser) { window.location.href = "index.html"; return; }
     const userId = sessionUser.email.replace(/\./g, '-').replace(/@/g, '-at-');
 
-    // === 2. DADOS DO USUÁRIO ===
+    // === 2. CARREGAR DADOS DO USUÁRIO (FIREBASE) ===
     try {
         const dbRef = ref(db);
         const snapshot = await get(child(dbRef, `users/${userId}`));
@@ -18,30 +18,47 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         const userData = snapshot.val();
 
-        // Preenche Header e Sidebar
+        // --- PREENCHE HEADER E SIDEBAR ---
         const firstName = userData.name ? userData.name.split(" ")[0] : "Atleta";
         const avatar = userData.avatar || `https://ui-avatars.com/api/?name=${firstName}`;
         
-        document.getElementById("userName").innerText = firstName;
+        if(document.getElementById("userName")) document.getElementById("userName").innerText = firstName;
         if(document.getElementById("headerAvatar")) document.getElementById("headerAvatar").src = avatar;
         if(document.getElementById("sidebarAvatar")) document.getElementById("sidebarAvatar").src = avatar;
         if(document.getElementById("sidebarName")) document.getElementById("sidebarName").innerText = userData.name;
         if(document.getElementById("sidebarEmail")) document.getElementById("sidebarEmail").innerText = userData.email;
 
-        // === 3. INICIAR SISTEMA ===
+        // --- PREENCHE CAMPOS DE "EDITAR PERFIL" ---
+        if(document.getElementById("edit_name")) {
+            document.getElementById("edit_name").value = userData.name || "";
+            document.getElementById("edit_email").value = userData.email || "";
+            document.getElementById("edit_phone").value = userData.phone || "";
+            document.getElementById("edit_avatar").value = userData.avatar || "";
+            // Preview da imagem
+            const preview = document.getElementById("profilePreview");
+            if(preview) preview.src = userData.avatar || avatar;
+        }
+
+        // --- INICIAR MÓDULOS ---
         renderHomeCards(userData);
         setupNavigation(userData);
+        loadAssessmentData(); // Carrega avaliação física
+        setupAnamnese(userData); // Carrega a anamnese detalhada
 
     } catch (error) {
         console.error("Erro fatal:", error);
         alert("Erro ao carregar o sistema: " + error.message);
     }
 
-    // --- FUNÇÃO 1: RENDERIZAR CARDS (HOME) ---
+    // =================================================================
+    // === MÓDULO 1: RENDERIZAÇÃO DOS CARDS DE TREINO (HOME) ===
+    // =================================================================
     function renderHomeCards(userData) {
         const cardsContainer = document.getElementById("workoutCardsContainer");
+        if(!cardsContainer) return;
         cardsContainer.innerHTML = ""; 
 
+        // Prioridade 1: Estrutura Nova (Pastas A, B, C)
         if (userData.workouts) {
             Object.keys(userData.workouts).forEach(key => {
                 let workoutData = userData.workouts[key];
@@ -49,6 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 createWorkoutCard(key, workoutData);
             });
         } 
+        // Prioridade 2: Estrutura Antiga (Treino Único)
         else if (userData.customWorkout) {
             let workoutData = userData.customWorkout;
             if (!Array.isArray(workoutData)) workoutData = Object.values(workoutData);
@@ -71,7 +89,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     }
 
-    // --- FUNÇÃO 2: NAVEGAÇÃO E MENU ---
+    // =================================================================
+    // === MÓDULO 2: NAVEGAÇÃO, MENU E PERFIL ===
+    // =================================================================
     function setupNavigation(userData) {
         const menuBtn = document.getElementById("openMenuBtn");
         const sidebar = document.getElementById("mobileSidebar");
@@ -80,8 +100,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         const sections = document.querySelectorAll(".view-section");
 
         function toggleMenu() {
-            sidebar.classList.toggle("active");
-            overlay.classList.toggle("active");
+            if(sidebar) sidebar.classList.toggle("active");
+            if(overlay) overlay.classList.toggle("active");
         }
 
         if(menuBtn) menuBtn.addEventListener("click", toggleMenu);
@@ -97,26 +117,86 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 const targetId = link.dataset.target;
                 sections.forEach(sec => sec.classList.add("hidden"));
-                document.getElementById(targetId).classList.remove("hidden");
-                toggleMenu();
+                const targetEl = document.getElementById(targetId);
+                if(targetEl) targetEl.classList.remove("hidden");
+                
+                // Fecha menu no mobile ao clicar
+                if(window.innerWidth < 768) toggleMenu();
             });
         });
 
-        document.getElementById("logoutBtnSide").addEventListener("click", () => {
-            localStorage.removeItem("fitUser");
-            window.location.href = "index.html";
-        });
+        const logoutBtn = document.getElementById("logoutBtnSide");
+        if(logoutBtn) {
+            logoutBtn.addEventListener("click", () => {
+                localStorage.removeItem("fitUser");
+                window.location.href = "index.html";
+            });
+        }
 
-        // --- LÓGICA DA ANAMNESE ---
+        // --- SALVAR PERFIL (NOVO) ---
+        const saveProfileBtn = document.getElementById("saveProfileBtn");
+        if(saveProfileBtn) {
+            saveProfileBtn.addEventListener("click", async () => {
+                const btn = document.getElementById("saveProfileBtn");
+                btn.innerText = "Atualizando...";
+                
+                const newName = document.getElementById("edit_name").value;
+                const newAvatar = document.getElementById("edit_avatar").value;
+                const newPhone = document.getElementById("edit_phone").value;
+
+                if(!newName) {
+                    alert("O nome é obrigatório.");
+                    btn.innerText = "Atualizar Perfil";
+                    return;
+                }
+
+                try {
+                    await update(ref(db, `users/${userId}`), {
+                        name: newName,
+                        avatar: newAvatar,
+                        phone: newPhone
+                    });
+                    
+                    // Atualiza sessão local para refletir na hora
+                    const session = JSON.parse(localStorage.getItem("fitUser"));
+                    session.name = newName;
+                    session.avatar = newAvatar;
+                    localStorage.setItem("fitUser", JSON.stringify(session));
+
+                    alert("Perfil atualizado com sucesso!");
+                    window.location.reload();
+                } catch(e) {
+                    alert("Erro ao atualizar: " + e.message);
+                } finally {
+                    btn.innerText = "Atualizar Perfil";
+                }
+            });
+        }
+    }
+
+    // =================================================================
+    // === MÓDULO 3: ANAMNESE COMPLETA (NOVO) ===
+    // =================================================================
+    function setupAnamnese(userData) {
         if (userData.anamnese) {
             const a = userData.anamnese;
-            if(document.getElementById("anm_occupation")) document.getElementById("anm_occupation").value = a.occupation || "";
-            if(document.getElementById("anm_work_posture")) document.getElementById("anm_work_posture").value = a.workPosture || "sentado";
-            if(document.getElementById("anm_meds")) document.getElementById("anm_meds").value = a.meds || "";
-            if(document.getElementById("anm_smoker")) document.getElementById("anm_smoker").value = a.smoker || "nao";
-            if(document.getElementById("anm_injuries")) document.getElementById("anm_injuries").value = a.injuries || "";
-            if(document.getElementById("anm_allergies")) document.getElementById("anm_allergies").value = a.allergies || "";
+            // Função auxiliar para preencher valor com segurança
+            const setVal = (id, val) => { const el = document.getElementById(id); if(el) el.value = val || ""; };
+            
+            setVal("anm_birth", a.birthDate);
+            setVal("anm_gender", a.gender);
+            setVal("anm_occupation", a.occupation);
+            setVal("anm_work_posture", a.workPosture);
+            setVal("anm_smoker", a.smoker);
+            setVal("anm_alcohol", a.alcohol);
+            setVal("anm_sleep", a.sleep);
+            setVal("anm_water", a.water);
+            setVal("anm_meds", a.meds);
+            setVal("anm_injuries", a.injuries);
+            setVal("anm_surgeries", a.surgeries);
+            setVal("anm_days", a.daysAvailable);
 
+            // Preenche checkboxes
             const checkBoxes = (className, savedArray) => {
                 if(savedArray) {
                     document.querySelectorAll(`.${className}`).forEach(cb => {
@@ -124,40 +204,51 @@ document.addEventListener("DOMContentLoaded", async () => {
                     });
                 }
             };
-            checkBoxes('med-check', a.medicalHistory);
-            checkBoxes('sym-check', a.symptoms);
+            checkBoxes('med-check', a.diagnostics);
             checkBoxes('goal-check', a.goals);
         }
 
-        document.getElementById("saveAnamneseBtn").addEventListener("click", async () => {
-            const btn = document.getElementById("saveAnamneseBtn");
-            btn.innerText = "SALVANDO...";
-            
-            const getChecked = (className) => Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value);
+        const saveAnmBtn = document.getElementById("saveAnamneseBtn");
+        if(saveAnmBtn) {
+            saveAnmBtn.addEventListener("click", async () => {
+                const btn = document.getElementById("saveAnamneseBtn");
+                btn.innerText = "SALVANDO...";
+                
+                // Helper para pegar valor
+                const getVal = (id) => document.getElementById(id)?.value || "";
+                const getChecked = (className) => Array.from(document.querySelectorAll(`.${className}:checked`)).map(cb => cb.value);
 
-            const anamneseData = {
-                occupation: document.getElementById("anm_occupation").value,
-                workPosture: document.getElementById("anm_work_posture").value,
-                medicalHistory: getChecked('med-check'),
-                symptoms: getChecked('sym-check'),
-                meds: document.getElementById("anm_meds").value,
-                smoker: document.getElementById("anm_smoker").value,
-                injuries: document.getElementById("anm_injuries").value,
-                allergies: document.getElementById("anm_allergies").value,
-                goals: getChecked('goal-check'),
-                updatedAt: new Date().toISOString()
-            };
+                const anamneseData = {
+                    birthDate: getVal("anm_birth"),
+                    gender: getVal("anm_gender"),
+                    occupation: getVal("anm_occupation"),
+                    workPosture: getVal("anm_work_posture"),
+                    smoker: getVal("anm_smoker"),
+                    alcohol: getVal("anm_alcohol"),
+                    sleep: getVal("anm_sleep"),
+                    water: getVal("anm_water"),
+                    meds: getVal("anm_meds"),
+                    injuries: getVal("anm_injuries"),
+                    surgeries: getVal("anm_surgeries"),
+                    daysAvailable: getVal("anm_days"),
+                    diagnostics: getChecked('med-check'),
+                    goals: getChecked('goal-check'),
+                    updatedAt: new Date().toISOString()
+                };
 
-            try {
-                await update(ref(db, `users/${userId}/anamnese`), anamneseData);
-                alert("Ficha salva com sucesso!");
-            } catch (e) { alert("Erro: " + e.message); }
-            finally { btn.innerText = "SALVAR FICHA COMPLETA"; }
-        });
-    } 
+                try {
+                    await update(ref(db, `users/${userId}/anamnese`), anamneseData);
+                    alert("Ficha de saúde atualizada com sucesso!");
+                } catch (e) { alert("Erro: " + e.message); }
+                finally { btn.innerText = "SALVAR FICHA COMPLETA"; }
+            });
+        }
+    }
 
 
-    // --- FUNÇÃO 3: EXECUÇÃO DO TREINO (MODO FOCO) ---
+    // =================================================================
+    // === MÓDULO 4: EXECUÇÃO DO TREINO (MODO FOCO) ===
+    // =================================================================
     let activeWorkoutName = "";
     let startTime = null;
 
@@ -179,11 +270,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
     });
 
-    // ==========================================================
-    // === CORREÇÃO DO ERRO "ex is not defined" AQUI ===
-    // ==========================================================
     function renderExercises(workout) {
         const list = document.getElementById("workoutList");
+        if(!list) return;
         list.innerHTML = "";
         
         const safeWorkout = Array.isArray(workout) ? workout : Object.values(workout);
@@ -191,18 +280,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         safeWorkout.forEach((ex, idx) => {
             if (!ex) return; 
 
-            // 1. TENTA PEGAR A IMAGEM DO EXERCÍCIO (Do JSON salvo no treino)
-            // Se não tiver imagem, usa um placeholder genérico
-            const imgSource = ex.img || "https://placehold.co/600x400/EEE/31343C?text=Sem+Imagem";
-
-            const card = document.createElement("div");
-            card.style.cssText = "background:var(--surface-color); padding:1rem; border-radius:12px; margin-bottom:1rem; border:1px solid rgba(255,255,255,0.05);";
+            // 1. TENTA PEGAR A IMAGEM DO EXERCÍCIO
+            // Usa placeholder se não tiver imagem definida
+            const imgSource = (ex.img && ex.img.length > 5) ? ex.img : "https://placehold.co/600x400/EEE/31343C?text=Sem+Imagem"; 
             
+            // Ícones baseados no tipo
             let icon = '<i class="ph ph-barbell"></i>';
             if(ex.type === 'cardio') icon = '<i class="ph ph-sneaker-move"></i>';
             if(ex.type === 'crossfit') icon = '<i class="ph ph-fire"></i>';
 
-            // 2. MONTA O HTML DO CARD (Com a imagem e a instrução)
+            const card = document.createElement("div");
+            card.style.cssText = "background:var(--surface-color); padding:1rem; border-radius:12px; margin-bottom:1rem; border:1px solid rgba(255,255,255,0.05);";
+            
             card.innerHTML = `
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; cursor:pointer;" onclick="toggleDetails('details-${idx}')">
                     <div style="display:flex; gap:12px; align-items:center; flex:1;">
@@ -218,11 +307,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
 
                 <div id="details-${idx}" class="hidden" style="background:#fff; border-radius:12px; margin-bottom:15px; overflow:hidden; border:1px solid #333; animation: fadeIn 0.3s;">
-                    
                     <div style="background:white; padding:10px; display:flex; justify-content:center; align-items:center; border-bottom:1px solid #eee;">
-                        <img src="${imgSource}" style="max-width:100%; max-height:250px; object-fit:contain;" onerror="this.style.display='none'">
+                        <img src="${imgSource}" style="max-width:100%; max-height:250px; object-fit:contain;" 
+                             onerror="this.onerror=null; this.parentElement.style.background='#eee'; this.parentElement.innerHTML='<span style=\\'color:#333\\'>Sem Imagem</span>';">
                     </div>
-                    
                     <div style="padding:15px; background:var(--surface-color);">
                         <p style="font-size:0.9rem; color:#ddd; line-height:1.5; margin:0;">
                             <strong style="color:var(--primary-color);">Como fazer:</strong><br>
@@ -236,7 +324,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             
             list.appendChild(card);
 
-            // 3. PREENCHE AS SÉRIES
+            // 3. PREENCHE AS SÉRIES DENTRO DO CARD CRIADO
             const container = card.querySelector(`#sets-container-${idx}`);
             
             if(ex.type === 'cardio' || ex.type === 'crossfit') {
@@ -263,16 +351,20 @@ document.addEventListener("DOMContentLoaded", async () => {
                     container.appendChild(row);
                 }
             }
-        }); // FIM DO LOOP FOREACH (AQUI E A CHAVE MÁGICA)
+        }); 
     }
 
-    // --- FUNÇÕES GLOBAIS ---
+    // =================================================================
+    // === MÓDULO 5: FUNÇÕES GLOBAIS (TIMER, CHECKBOX, FEEDBACK) ===
+    // =================================================================
+    
+    // Checkbox e Timer
     window.toggleCheck = (el) => {
         const icon = el.querySelector("i");
         if(icon.style.display === "none") {
             el.style.background = "var(--primary-color)";
             icon.style.display = "block";
-            startRestTimer(60);
+            startRestTimer(60); // Inicia timer padrão
         } else {
             el.style.background = "#222";
             icon.style.display = "none";
@@ -296,6 +388,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         }, 1000);
     }
     
+    // Botão "+30s" no timer
     window.addTime = (s) => { 
         if(!timerDisplay) return;
         const current = timerDisplay.innerText.split(':');
@@ -307,13 +400,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     if(document.getElementById("closeTimerBtn")) {
         document.getElementById("closeTimerBtn").addEventListener("click", () => { 
             clearInterval(timerInterval); 
-            timerDiv.classList.remove("active"); 
+            if(timerDiv) timerDiv.classList.remove("active"); 
         });
     }
 
-    document.getElementById("finishBtn").addEventListener("click", () => {
-        document.getElementById("view-feedback").classList.remove("hidden");
-    });
+    // Feedback do Treino
+    const finishBtn = document.getElementById("finishBtn");
+    if(finishBtn) {
+        finishBtn.addEventListener("click", () => {
+            document.getElementById("view-feedback").classList.remove("hidden");
+        });
+    }
 
     let selectedRpe = 0;
     document.querySelectorAll(".rpe-btn").forEach(btn => {
@@ -326,22 +423,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
-    document.getElementById("submitFeedbackBtn").addEventListener("click", async () => {
-        if(selectedRpe === 0) return alert("Selecione a intensidade.");
-        try {
-            await push(ref(db, `users/${userId}/history`), {
-                date: new Date().toISOString(),
-                workoutName: activeWorkoutName,
-                duration: Math.round((new Date() - startTime)/60000) + " min",
-                rpe: selectedRpe,
-                comment: document.getElementById("feedbackComment").value
-            });
-            alert("Treino Salvo! 💪");
-            window.location.reload();
-        } catch(e) { alert("Erro: " + e.message); }
-    });
+    const submitFeedback = document.getElementById("submitFeedbackBtn");
+    if(submitFeedback) {
+        submitFeedback.addEventListener("click", async () => {
+            if(selectedRpe === 0) return alert("Selecione a intensidade.");
+            try {
+                await push(ref(db, `users/${userId}/history`), {
+                    date: new Date().toISOString(),
+                    workoutName: activeWorkoutName,
+                    duration: Math.round((new Date() - startTime)/60000) + " min",
+                    rpe: selectedRpe,
+                    comment: document.getElementById("feedbackComment").value
+                });
+                alert("Treino Salvo! 💪");
+                window.location.reload();
+            } catch(e) { alert("Erro: " + e.message); }
+        });
+    }
 
-    // === 5. CARREGAR AVALIAÇÃO FÍSICA ===
+    // === MÓDULO 6: CARREGAR AVALIAÇÃO FÍSICA ===
     async function loadAssessmentData() {
         try {
             const snapshot = await get(child(ref(db), `users/${userId}/assessments`));
@@ -351,41 +451,36 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const assessments = Object.values(data);
                 const latest = assessments[assessments.length - 1];
 
-                if(latest.bio) {
+                // Card Principal
+                if(latest.bio && document.getElementById("userWeight")) {
                     document.getElementById("userWeight").innerText = latest.bio.weight || "--";
                     document.getElementById("userFat").innerText = latest.bio.fat || "--";
                     document.getElementById("userBMI").innerText = latest.bio.bmi || "--";
                     document.getElementById("userMuscle").innerText = latest.bio.muscle || "--";
-                } else if (latest.basic) {
-                    document.getElementById("userWeight").innerText = latest.basic.weight || "--";
-                    document.getElementById("userBMI").innerText = latest.basic.bmi || "--";
                 }
 
-                if(latest.circ) {
+                // Tabela de Perímetros
+                if(latest.circ && document.getElementById("res_shoulder")) {
                     document.getElementById("res_shoulder").innerText = latest.circ.shoulder || "--";
                     document.getElementById("res_waist").innerText = latest.circ.waist || "--";
                     document.getElementById("res_arm").innerText = latest.circ.arm_r || "--";
                     document.getElementById("res_thigh").innerText = latest.circ.thigh_r || "--";
                 }
 
+                // Data da avaliação
                 const date = new Date(latest.date).toLocaleDateString('pt-BR');
-                document.getElementById("lastAvalDate").innerText = date;
-            } else {
-                document.getElementById("userWeight").innerText = "-";
+                if(document.getElementById("lastAvalDate")) document.getElementById("lastAvalDate").innerText = date;
             }
         } catch (error) {
             console.error("Erro ao carregar avaliação:", error);
         }
     }
 
-    // Função global para abrir/fechar o card (AGORA NO ESCOPO GLOBAL)
+    // Função global para abrir/fechar o card
     window.toggleDetails = (id) => {
         const el = document.getElementById(id);
         if(el) {
             el.classList.toggle('hidden');
         }
     };
-
-    // CHAMA A FUNÇÃO AO INICIAR
-    loadAssessmentData();
 });
